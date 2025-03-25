@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Star Rewards Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body class="robots-theme">
+    <div class="app-container">
+        <header>
+            <div class="title-container">
+                <span id="themeEmoticon" class="theme-emoticon">🤖</span>
+                <h1>Star Collector</h1>
+            </div>
+            <div class="total-stars">
+                <div class="star-badge">
+                    <div class="star-animation-container">
+                        <span class="star-icon">⭐</span>
+                    </div>
+                    <span id="totalStarsCount">0</span>
+                </div>
+            </div>
+            <button id="settingsBtn" class="settings-button">⚙️</button>
+        </header>
+        
+        <main>
+            <section class="task-section">
+                <h2>Tasks</h2>
+                <div class="task-header">
+                    <div class="task-tabs">
+                        <button class="tab active" data-tab="daily">Daily</button>
+                        <button class="tab" data-tab="oneoff">One-off</button>
+                    </div>
+                    <button id="resetDailyBtn" class="reset-daily-btn">Reset Daily Tasks</button>
+                </div>
+                <div class="task-list" id="taskList"></div>
+            </section>
+            
+            <section class="rewards-section">
+                <h2>Rewards</h2>
+                <div class="rewards-list" id="rewardsList"></div>
+            </section>
+        </main>
+        
+        <!-- Settings Modal -->
+        <div id="settingsModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Settings</h2>
+                
+                <div class="settings-section">
+                    <h3>Theme</h3>
+                    <div class="theme-options">
+    <button class="theme-btn active" data-theme="robots">Robots</button>
+    <button class="theme-btn" data-theme="dinosaur">Dinosaur</button>
+    <button class="theme-btn" data-theme="unicorn">Unicorn</button>
+    <button class="theme-btn" data-theme="pirate">Pirate</button>
+    <button class="theme-btn" data-theme="princess">Princess</button>
+    <button class="theme-btn" data-theme="space">Space</button>
+    <button class="theme-btn" data-theme="superhero">Superhero</button>
+    <button class="theme-btn" data-theme="ocean">Ocean</button>
+</div>
+                </div>
+                
+                <div class="settings-section">
+                    <h3>Google Integration</h3>
+                    <label class="toggle">
+                        <input type="checkbox" id="googleToggle">
+                        <span class="slider"></span>
+                    </label>
+                    <div id="googleApiKey" class="hidden">
+                        <label for="apiKey">API Key:</label>
+                        <input type="text" id="apiKey">
+                        <button id="saveApiKey">Save</button>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <h3>Edit Mode</h3>
+                    <button id="editModeBtn">Enable Edit Mode</button>
+                    <div id="mathChallenge" class="hidden">
+                        <p id="mathQuestion"></p>
+                        <input type="number" id="mathAnswer">
+                        <button id="checkAnswer">Check</button>
+                    </div>
+                </div>
+                
+
+            </div>
+        </div>
+        
+        <!-- Reward Modal -->
+        <div id="rewardModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2 id="rewardTitle"></h2>
+                <div class="progress-container">
+                    <div class="progress-bar" id="rewardProgress"></div>
+                </div>
+                <div class="stars-progress">
+                    <div id="starsProgressContainer" class="stars-container"></div>
+                </div>
+                <p id="progressText"></p>
+                <button id="claimRewardBtn" class="hidden">Claim Reward! 🎉</button>
+            </div>
+        </div>
+        
+        <!-- Edit Modal -->
+        <div id="editModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Edit Items</h2>
+                <div class="edit-tabs">
+                    <button class="tab active" data-tab="editTasks">Tasks</button>
+                    <button class="tab" data-tab="editRewards">Rewards</button>
+                </div>
+                
+                <div id="editTasks" class="edit-section">
+  <h3>Tasks</h3>
+  <div class="filter-options">
+    <button class="filter-btn active" data-filter="all">All Tasks</button>
+    <button class="filter-btn" data-filter="completed">Completed</button>
+  </div>
+  <div id="taskItems"></div>
+  <div class="edit-action-buttons">
+    <button id="addTaskBtn">Add Task</button>
+    <button id="resetCompletedTasksBtn" class="secondary-btn">Reset Completed One-offs</button>
+  </div>
+</div>
+
+<div id="editRewards" class="edit-section hidden">
+  <h3>Rewards</h3>
+  <div class="filter-options">
+    <button class="filter-btn active" data-filter="all">All Rewards</button>
+    <button class="filter-btn" data-filter="claimed">Claimed</button>
+  </div>
+  <div id="rewardItems"></div>
+  <div class="edit-action-buttons">
+    <button id="addRewardBtn">Add Reward</button>
+    <button id="resetClaimedRewardsBtn" class="secondary-btn">Reset Claimed Rewards</button>
+    <button id="clearFinishedRewardsBtn" class="danger-btn">Remove Claimed Rewards</button>
+  </div>
+</div>
+                
+                <div id="editRewards" class="edit-section hidden">
+                    <h3>Rewards</h3>
+                    <div id="rewardItems"></div>
+                    <div class="edit-action-buttons">
+                        <button id="addRewardBtn">Add Reward</button>
+                        <button id="clearFinishedRewardsBtn" class="secondary-btn">Clear Claimed Rewards</button>
+                    </div>
+                </div>
+              <div class="edit-actions-global">
+    <button id="resetDataBtn" class="danger-btn">Reset All Data</button>
+</div>
+            </div>
+        </div>
+        
+        <!-- Add Item Modal -->
+        <div id="addItemModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2 id="addItemTitle">Add Item</h2>
+                <form id="addItemForm">
+                    <div class="form-group">
+                        <label for="itemName">Name:</label>
+                        <input type="text" id="itemName" required>
+                    </div>
+                    
+                    <div class="form-group" id="taskTypeGroup">
+                        <label>Type:</label>
+                        <select id="taskType">
+                            <option value="daily">Daily</option>
+                            <option value="oneoff">One-off</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group" id="starsGroup">
+                        <label for="starValue">Stars:</label>
+                        <input type="number" id="starValue" min="1" value="1">
+                    </div>
+                    
+                    <div class="form-group" id="starsNeededGroup" class="hidden">
+                        <label for="starsNeeded">Stars Needed:</label>
+                        <input type="number" id="starsNeeded" min="1" value="5">
+                    </div>
+                    
+                    <button type="submit" id="saveItemBtn">Save</button>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Notification Toast -->
+        <div id="notification" class="hidden">
+            <p id="notificationText"></p>
+        </div>
+    </div>
+    
+    <script src="app.js"></script>
+</body>
+</html>
