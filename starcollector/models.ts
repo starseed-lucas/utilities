@@ -22,9 +22,9 @@ export interface AppData {
     rewards: Reward[];
     earnedStars: number;
     theme: 'robots' | 'dinosaur' | 'unicorn' | 'pirate' | 'princess' | 'space' | 'superhero' | 'ocean';
-    googleIntegration: boolean;
-    googleApiKey?: string;
+    firebaseEnabled: boolean;
     lastSync?: string; // ISO date string
+    userId?: string; // Firebase user ID
 }
 
 // Default data to initialize the app
@@ -45,7 +45,7 @@ export const getDefaultData = (): AppData => {
         ],
         earnedStars: 0,
         theme: 'robots',
-        googleIntegration: false
+        firebaseEnabled: false
     };
 };
 

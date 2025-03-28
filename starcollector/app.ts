@@ -9,6 +9,7 @@ import {
     generateMathChallenge,
     initializeTaskOrder
 } from './utils';
+import { firebaseService } from './firebase-service';
 
 class StarRewardsApp {
     private data: AppData;
@@ -16,7 +17,7 @@ class StarRewardsApp {
     private reorderMode: boolean = false;
     private activeTaskTab: 'daily' | 'oneoff' = 'daily';
     private activeEditTab: 'editTasks' | 'editRewards' = 'editTasks';
-    private googleSyncInterval: number | null = null;
+    private syncInterval: number | null = null;
     private draggedTask: HTMLElement | null = null;
     private originalTaskOrder: Task[] = [];
 
@@ -25,15 +26,16 @@ class StarRewardsApp {
         this.initializeApp();
     }
 
-    private initializeApp(): void {
+    private async initializeApp(): Promise<void> {
         this.applyTheme();
         this.renderTasks();
         this.renderRewards();
         this.updateStarsDisplay();
         this.setupEventListeners();
 
-        if (this.data.googleIntegration && this.data.googleApiKey) {
-            this.setupGoogleSync();
+        // Initialize Firebase if enabled
+        if (this.data.firebaseEnabled && this.data.userId) {
+            await this.setupFirebaseSync();
         }
 
         // Reset daily tasks if needed
@@ -63,12 +65,13 @@ class StarRewardsApp {
         }
     }
 
-    private saveData(): void {
+    private async saveData(): Promise<void> {
         localStorage.setItem('starRewardsData', JSON.stringify(this.data));
         this.updateStarsDisplay();
         
-        if (this.data.googleIntegration && this.data.googleApiKey) {
-            this.syncToGoogle();
+        // Sync to Firebase if enabled
+        if (this.data.firebaseEnabled && firebaseService.isUserSignedIn()) {
+            await this.syncToFirebase();
         }
     }
 
@@ -463,16 +466,15 @@ class StarRewardsApp {
             });
         });
 
-        // Other event listeners (add all your existing event listeners here)
+        // Setup all other event listeners
         this.setupThemeListeners();
-        this.setupGoogleIntegrationListeners();
+        this.setupFirebaseListeners();
         this.setupEditModeListeners();
         this.setupRewardModalListeners();
         this.setupEditItemListeners();
         this.setupModalCloseListeners();
     }
     
-    // These methods would contain the specific event listener groups from your original setupEventListeners method
     private setupThemeListeners(): void {
         const themeButtons = document.querySelectorAll('.theme-btn');
         themeButtons.forEach(btn => {
@@ -489,85 +491,103 @@ class StarRewardsApp {
         });
     }
     
-    private setupGoogleIntegrationListeners(): void {
-        const googleToggle = document.getElementById('googleToggle') as HTMLInputElement;
-        const googleApiKeySection = document.getElementById('googleApiKey');
-        const apiKeyInput = document.getElementById('apiKey') as HTMLInputElement;
-        const saveApiKeyBtn = document.getElementById('saveApiKey');
-
-        if (googleToggle && googleApiKeySection) {
-            googleToggle.checked = this.data.googleIntegration;
-            googleToggle.addEventListener('change', () => {
-                this.data.googleIntegration = googleToggle.checked;
-                if (googleToggle.checked) {
-                    googleApiKeySection.classList.remove('hidden');
-                } else {
-                    googleApiKeySection.classList.add('hidden');
-                    if (this.googleSyncInterval) {
-                        clearInterval(this.googleSyncInterval);
-                        this.googleSyncInterval = null;
+    private setupFirebaseListeners(): void {
+        const firebaseToggle = document.getElementById('firebaseToggle') as HTMLInputElement;
+        const firebaseLoginBtn = document.getElementById('firebaseLoginBtn');
+        const firebaseLogoutBtn = document.getElementById('firebaseLogoutBtn');
+        
+        if (firebaseToggle) {
+            firebaseToggle.checked = this.data.firebaseEnabled;
+            firebaseToggle.addEventListener('change', () => {
+                this.data.firebaseEnabled = firebaseToggle.checked;
+                
+                if (firebaseToggle.checked) {
+                    // Show login button if not signed in
+                    if (!firebaseService.isUserSignedIn() && firebaseLoginBtn) {
+                        firebaseLoginBtn.classList.remove('hidden');
                     }
+                } else {
+                    // Clear sync interval if we're disabling Firebase
+                    if (this.syncInterval) {
+                        clearInterval(this.syncInterval);
+                        this.syncInterval = null;
+                    }
+                    
+                    // Hide Firebase buttons
+                    if (firebaseLoginBtn) firebaseLoginBtn.classList.add('hidden');
+                    if (firebaseLogoutBtn) firebaseLogoutBtn.classList.add('hidden');
                 }
+                
                 this.saveData();
+                this.updateFirebaseUI();
             });
         }
-
-        if (apiKeyInput && saveApiKeyBtn) {
-            apiKeyInput.value = this.data.googleApiKey || '';
-            saveApiKeyBtn.addEventListener('click', () => {
-                this.data.googleApiKey = apiKeyInput.value;
+        
+        if (firebaseLoginBtn) {
+            firebaseLoginBtn.addEventListener('click', async () => {
+                const user = await firebaseService.signInWithGoogle();
+                if (user) {
+                    this.data.userId = user.uid;
+                    await this.setupFirebaseSync();
+                    showNotification('Signed in to Firebase!');
+                    this.updateFirebaseUI();
+                } else {
+                    showNotification('Failed to sign in to Firebase!');
+                }
+            });
+        }
+        
+        if (firebaseLogoutBtn) {
+            firebaseLogoutBtn.addEventListener('click', async () => {
+                await firebaseService.signOut();
+                this.data.userId = undefined;
+                
+                // Clear sync interval
+                if (this.syncInterval) {
+                    clearInterval(this.syncInterval);
+                    this.syncInterval = null;
+                }
+                
                 this.saveData();
-                this.setupGoogleSync();
-                showNotification('API key saved!');
+                showNotification('Signed out from Firebase!');
+                this.updateFirebaseUI();
             });
         }
     }
     
-    private setupEditModeListeners(): void {
-        // Implement the edit mode related listeners
-        const editModeBtn = document.getElementById('editModeBtn');
-        const mathChallenge = document.getElementById('mathChallenge');
-        const mathAnswerInput = document.getElementById('mathAnswer') as HTMLInputElement;
-        const checkAnswerBtn = document.getElementById('checkAnswer');
-        const editModal = document.getElementById('editModal');
+    private updateFirebaseUI(): void {
+        const firebaseToggle = document.getElementById('firebaseToggle') as HTMLInputElement;
+        const firebaseLoginBtn = document.getElementById('firebaseLoginBtn');
+        const firebaseLogoutBtn = document.getElementById('firebaseLogoutBtn');
+        const firebaseStatus = document.getElementById('firebaseStatus');
         
-        if (editModeBtn && mathChallenge) {
-            editModeBtn.addEventListener('click', () => {
-                const challenge = generateMathChallenge();
-                const mathQuestion = document.getElementById('mathQuestion');
-                if (mathQuestion) {
-                    mathQuestion.textContent = challenge.question;
-                    mathQuestion.dataset.answer = challenge.answer.toString();
-                }
-                mathChallenge.classList.remove('hidden');
-            });
+        if (firebaseToggle) {
+            firebaseToggle.checked = this.data.firebaseEnabled;
         }
         
-        if (mathAnswerInput && checkAnswerBtn && editModal && mathChallenge) {
-            checkAnswerBtn.addEventListener('click', () => {
-                const userAnswer = parseInt(mathAnswerInput.value);
-                const correctAnswer = parseInt(
-                    (document.getElementById('mathQuestion') as HTMLElement).dataset.answer || '0'
-                );
-
-                if (userAnswer === correctAnswer) {
-                    mathChallenge.classList.add('hidden');
-                    this.editMode = true;
-                    editModal.style.display = 'flex';
-                    this.renderEditItems();
-                    showNotification('Edit mode enabled!');
-                } else {
-                    showNotification('Incorrect answer, try again!');
-                    const challenge = generateMathChallenge();
-                    const mathQuestion = document.getElementById('mathQuestion');
-                    if (mathQuestion) {
-                        mathQuestion.textContent = challenge.question;
-                        mathQuestion.dataset.answer = challenge.answer.toString();
-                    }
+        if (this.data.firebaseEnabled) {
+            if (firebaseService.isUserSignedIn()) {
+                // User is signed in
+                if (firebaseLoginBtn) firebaseLoginBtn.classList.add('hidden');
+                if (firebaseLogoutBtn) firebaseLogoutBtn.classList.remove('hidden');
+                if (firebaseStatus) {
+                    firebaseStatus.textContent = `Connected as ${firebaseService.getUserId()}`;
+                    firebaseStatus.classList.remove('hidden');
                 }
-
-                mathAnswerInput.value = '';
-            });
+            } else {
+                // User is not signed in
+                if (firebaseLoginBtn) firebaseLoginBtn.classList.remove('hidden');
+                if (firebaseLogoutBtn) firebaseLogoutBtn.classList.add('hidden');
+                if (firebaseStatus) {
+                    firebaseStatus.textContent = 'Not connected';
+                    firebaseStatus.classList.remove('hidden');
+                }
+            }
+        } else {
+            // Firebase is disabled
+            if (firebaseLoginBtn) firebaseLoginBtn.classList.add('hidden');
+            if (firebaseLogoutBtn) firebaseLogoutBtn.classList.add('hidden');
+            if (firebaseStatus) firebaseStatus.classList.add('hidden');
         }
     }
     
@@ -587,9 +607,6 @@ class StarRewardsApp {
     }
     
     private setupEditItemListeners(): void {
-        // This would include listeners for edit, add, delete items
-        // Implementation details go here
-        
         // Edit tabs
         const editTabs = document.querySelectorAll('.edit-tabs .tab');
         editTabs.forEach(tab => {
@@ -611,6 +628,85 @@ class StarRewardsApp {
         });
         
         // Add more edit item listeners here
+        const addTaskBtn = document.getElementById('addTaskBtn');
+        if (addTaskBtn) {
+            addTaskBtn.addEventListener('click', () => {
+                this.showAddItemModal('task');
+            });
+        }
+        
+        const addRewardBtn = document.getElementById('addRewardBtn');
+        if (addRewardBtn) {
+            addRewardBtn.addEventListener('click', () => {
+                this.showAddItemModal('reward');
+            });
+        }
+        
+        // Reset buttons
+        const resetCompletedTasksBtn = document.getElementById('resetCompletedTasksBtn');
+        if (resetCompletedTasksBtn) {
+            resetCompletedTasksBtn.addEventListener('click', () => {
+                this.resetCompletedOneoffTasks();
+            });
+        }
+        
+        const resetClaimedRewardsBtn = document.getElementById('resetClaimedRewardsBtn');
+        if (resetClaimedRewardsBtn) {
+            resetClaimedRewardsBtn.addEventListener('click', () => {
+                this.resetClaimedRewards();
+            });
+        }
+        
+        const clearFinishedRewardsBtn = document.getElementById('clearFinishedRewardsBtn');
+        if (clearFinishedRewardsBtn) {
+            clearFinishedRewardsBtn.addEventListener('click', () => {
+                this.clearClaimedRewards();
+            });
+        }
+        
+        // Reset all data
+        const resetDataBtn = document.getElementById('resetDataBtn');
+        if (resetDataBtn) {
+            resetDataBtn.addEventListener('click', () => {
+                if (confirm('Are you sure you want to reset ALL data? This cannot be undone!')) {
+                    this.data = getDefaultData();
+                    this.saveData();
+                    this.renderTasks();
+                    this.renderRewards();
+                    this.renderEditItems();
+                    showNotification('All data has been reset!');
+                }
+            });
+        }
+        
+        // Add Item form submit
+        const addItemForm = document.getElementById('addItemForm');
+        if (addItemForm) {
+            addItemForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                this.saveItemFromForm();
+            });
+        }
+        
+        // Filter buttons
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        filterButtons.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const target = e.target as HTMLElement;
+                const filterType = target.getAttribute('data-filter');
+                
+                // Update active class
+                const parentSection = target.closest('.edit-section');
+                if (parentSection) {
+                    parentSection.querySelectorAll('.filter-btn').forEach(b => {
+                        b.classList.remove('active');
+                    });
+                }
+                target.classList.add('active');
+                
+                this.filterEditItems(filterType);
+            });
+        });
     }
     
     private setupModalCloseListeners(): void {
@@ -851,6 +947,39 @@ class StarRewardsApp {
         });
     }
     
+    private showAddItemModal(type: 'task' | 'reward'): void {
+        const addItemModal = document.getElementById('addItemModal');
+        const addItemTitle = document.getElementById('addItemTitle');
+        const nameInput = document.getElementById('itemName') as HTMLInputElement;
+        const taskTypeGroup = document.getElementById('taskTypeGroup');
+        const starsGroup = document.getElementById('starsGroup');
+        const starsNeededGroup = document.getElementById('starsNeededGroup');
+        
+        if (!addItemModal || !addItemTitle || !nameInput) return;
+        
+        if (type === 'task') {
+            addItemTitle.textContent = 'Add Task';
+            nameInput.value = '';
+            
+            taskTypeGroup?.classList.remove('hidden');
+            starsGroup?.classList.remove('hidden');
+            starsNeededGroup?.classList.add('hidden');
+            
+            addItemModal.dataset.mode = 'addTask';
+        } else {
+            addItemTitle.textContent = 'Add Reward';
+            nameInput.value = '';
+            
+            taskTypeGroup?.classList.add('hidden');
+            starsGroup?.classList.add('hidden');
+            starsNeededGroup?.classList.remove('hidden');
+            
+            addItemModal.dataset.mode = 'addReward';
+        }
+        
+        addItemModal.style.display = 'flex';
+    }
+    
     private showEditItemModal(itemId: string): void {
         const addItemModal = document.getElementById('addItemModal');
         const addItemTitle = document.getElementById('addItemTitle');
@@ -900,6 +1029,83 @@ class StarRewardsApp {
         }
         
         addItemModal.style.display = 'flex';
+    }
+    
+    private saveItemFromForm(): void {
+        const addItemModal = document.getElementById('addItemModal');
+        const nameInput = document.getElementById('itemName') as HTMLInputElement;
+        
+        if (!addItemModal || !nameInput) return;
+        
+        const mode = addItemModal.dataset.mode;
+        const itemId = addItemModal.dataset.itemId;
+        
+        if (mode === 'addTask') {
+            const typeSelect = document.getElementById('taskType') as HTMLSelectElement;
+            const starsInput = document.getElementById('starValue') as HTMLInputElement;
+            
+            if (!typeSelect || !starsInput) return;
+            
+            const newTask: Task = {
+                id: generateId(),
+                name: nameInput.value,
+                type: typeSelect.value as 'daily' | 'oneoff',
+                stars: parseInt(starsInput.value) || 1,
+                completed: false,
+                order: this.data.tasks.filter(t => t.type === typeSelect.value).length
+            };
+            
+            this.data.tasks.push(newTask);
+            showNotification('Task added!');
+        } else if (mode === 'editTask' && itemId) {
+            const typeSelect = document.getElementById('taskType') as HTMLSelectElement;
+            const starsInput = document.getElementById('starValue') as HTMLInputElement;
+            
+            if (!typeSelect || !starsInput) return;
+            
+            const task = this.data.tasks.find(t => t.id === itemId);
+            if (!task) return;
+            
+            task.name = nameInput.value;
+            task.type = typeSelect.value as 'daily' | 'oneoff';
+            task.stars = parseInt(starsInput.value) || 1;
+            
+            showNotification('Task updated!');
+        } else if (mode === 'addReward') {
+            const starsNeededInput = document.getElementById('starsNeeded') as HTMLInputElement;
+            
+            if (!starsNeededInput) return;
+            
+            const newReward: Reward = {
+                id: generateId(),
+                name: nameInput.value,
+                starsNeeded: parseInt(starsNeededInput.value) || 5,
+                claimed: false
+            };
+            
+            this.data.rewards.push(newReward);
+            showNotification('Reward added!');
+        } else if (mode === 'editReward' && itemId) {
+            const starsNeededInput = document.getElementById('starsNeeded') as HTMLInputElement;
+            
+            if (!starsNeededInput) return;
+            
+            const reward = this.data.rewards.find(r => r.id === itemId);
+            if (!reward) return;
+            
+            reward.name = nameInput.value;
+            reward.starsNeeded = parseInt(starsNeededInput.value) || 5;
+            
+            showNotification('Reward updated!');
+        }
+        
+        this.saveData();
+        this.renderTasks();
+        this.renderRewards();
+        this.renderEditItems();
+        
+        // Close modal
+        addItemModal.style.display = 'none';
     }
     
     private resetItem(itemId: string): void {
@@ -959,23 +1165,82 @@ class StarRewardsApp {
             }
         });
     }
+    
+    private resetCompletedOneoffTasks(): void {
+        if (confirm('Are you sure you want to reset all completed one-off tasks?')) {
+            let resetCount = 0;
+            
+            this.data.tasks.forEach(task => {
+                if (task.type === 'oneoff' && task.completed) {
+                    task.completed = false;
+                    resetCount++;
+                }
+            });
+            
+            if (resetCount === 0) {
+                showNotification('No completed one-off tasks to reset!');
+                return;
+            }
+            
+            this.saveData();
+            this.renderTasks();
+            this.renderEditItems();
+            showNotification(`Reset ${resetCount} completed one-off tasks!`);
+        }
+    }
+    
+    private resetClaimedRewards(): void {
+        if (confirm('Are you sure you want to reset all claimed rewards?')) {
+            let resetCount = 0;
+            
+            this.data.rewards.forEach(reward => {
+                if (reward.claimed) {
+                    reward.claimed = false;
+                    resetCount++;
+                }
+            });
+            
+            if (resetCount === 0) {
+                showNotification('No claimed rewards to reset!');
+                return;
+            }
+            
+            this.saveData();
+            this.renderRewards();
+            this.renderEditItems();
+            showNotification(`Reset ${resetCount} claimed rewards!`);
+        }
+    }
+    
+    private clearClaimedRewards(): void {
+        if (confirm('Are you sure you want to remove all claimed rewards?')) {
+            const initialCount = this.data.rewards.length;
+            
+            this.data.rewards = this.data.rewards.filter(reward => !reward.claimed);
+            
+            const removedCount = initialCount - this.data.rewards.length;
+            
+            if (removedCount === 0) {
+                showNotification('No claimed rewards to remove!');
+                return;
+            }
+            
+            this.saveData();
+            this.renderRewards();
+            this.renderEditItems();
+            showNotification(`Removed ${removedCount} claimed rewards!`);
+        }
+    }
 
     private updateSettingsUI(): void {
-        // Google integration
-        const googleToggle = document.getElementById('googleToggle') as HTMLInputElement;
-        const googleApiKeySection = document.getElementById('googleApiKey');
-        const apiKeyInput = document.getElementById('apiKey') as HTMLInputElement;
+        // Firebase integration
+        const firebaseToggle = document.getElementById('firebaseToggle') as HTMLInputElement;
         
-        if (googleToggle) googleToggle.checked = this.data.googleIntegration;
-        if (apiKeyInput) apiKeyInput.value = this.data.googleApiKey || '';
-        
-        if (googleToggle && googleApiKeySection) {
-            if (googleToggle.checked) {
-                googleApiKeySection.classList.remove('hidden');
-            } else {
-                googleApiKeySection.classList.add('hidden');
-            }
+        if (firebaseToggle) {
+            firebaseToggle.checked = this.data.firebaseEnabled;
         }
+        
+        this.updateFirebaseUI();
         
         // Theme
         const themeButtons = document.querySelectorAll('.theme-btn');
@@ -1029,33 +1294,55 @@ class StarRewardsApp {
         }
     }
 
-    private setupGoogleSync(): void {
+    private async setupFirebaseSync(): Promise<void> {
         // Clear any existing interval
-        if (this.googleSyncInterval) {
-            clearInterval(this.googleSyncInterval);
+        if (this.syncInterval) {
+            clearInterval(this.syncInterval);
         }
         
-        // Sync immediately
-        this.syncToGoogle();
+        // Initial data load from Firebase if available
+        if (firebaseService.isUserSignedIn()) {
+            const firebaseData = await firebaseService.loadData();
+            
+            if (firebaseData) {
+                // Merge data - take the more recent version
+                if (firebaseData.lastSync && (!this.data.lastSync || new Date(firebaseData.lastSync) > new Date(this.data.lastSync))) {
+                    this.data = firebaseData;
+                    this.renderTasks();
+                    this.renderRewards();
+                    this.updateStarsDisplay();
+                    showNotification('Data loaded from Firebase!');
+                } else {
+                    // Local data is newer, sync to Firebase
+                    await this.syncToFirebase();
+                }
+            } else {
+                // No data in Firebase yet, do initial sync
+                await this.syncToFirebase();
+            }
+        }
         
-        // Set up interval (every 5 minutes)
-        this.googleSyncInterval = window.setInterval(() => {
-            this.syncToGoogle();
+        // Set up sync interval (every 5 minutes)
+        this.syncInterval = window.setInterval(async () => {
+            await this.syncToFirebase();
         }, 5 * 60 * 1000);
     }
 
-    private syncToGoogle(): void {
-        // This is a placeholder for Google Sheets API integration
-        // In a real implementation, you would:
-        // 1. Use the Google Sheets API to update a spreadsheet
-        // 2. Handle authentication with the API key
-        // 3. Format the data appropriately for the spreadsheet
-        
-        console.log('Syncing to Google...', this.data);
+    private async syncToFirebase(): Promise<void> {
+        if (!this.data.firebaseEnabled || !firebaseService.isUserSignedIn()) return;
         
         // Update last sync time
         this.data.lastSync = new Date().toISOString();
+        this.data.userId = firebaseService.getUserId() || undefined;
+        
+        // Save to local storage first
         localStorage.setItem('starRewardsData', JSON.stringify(this.data));
+        
+        // Now save to Firebase
+        const success = await firebaseService.saveData(this.data);
+        if (!success) {
+            showNotification('Failed to sync with Firebase!');
+        }
     }
 }
 

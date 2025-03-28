@@ -74,15 +74,18 @@
                 </div>
                 
                 <div class="settings-section">
-                    <h3>Google Integration</h3>
+                    <h3>Firebase Integration</h3>
+                    <p>Store your data in the cloud and sync across devices</p>
                     <label class="toggle">
-                        <input type="checkbox" id="googleToggle">
+                        <input type="checkbox" id="firebaseToggle">
                         <span class="slider"></span>
                     </label>
-                    <div id="googleApiKey" class="hidden">
-                        <label for="apiKey">API Key:</label>
-                        <input type="text" id="apiKey">
-                        <button id="saveApiKey">Save</button>
+                    <div id="firebaseStatus" class="hidden">
+                        <p>Connection status: <span id="connectionText">Not connected</span></p>
+                    </div>
+                    <div id="firebaseButtons">
+                        <button id="firebaseLoginBtn" class="hidden">Sign in with Google</button>
+                        <button id="firebaseLogoutBtn" class="hidden">Sign out</button>
                     </div>
                 </div>
                 
@@ -197,6 +200,8 @@
         </div>
     </div>
     
-    <script src="app.js"></script>
+    <!-- Include Firebase Scripts -->
+    <script type="module" src="firebase-service.js"></script>
+    <script type="module" src="app.js"></script>
 </body>
 </html>
