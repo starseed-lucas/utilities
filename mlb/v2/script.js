@@ -190,12 +190,22 @@ async function fetchGameData(gameId) {
         scoreboardElement.classList.add('hidden');
         gameDetailsElement.classList.add('hidden');
         
-        const boxscoreResponse = await axios.get(`${MLB_API_BASE_URL}${GAME_ENDPOINT}/${gameId}/boxscore`);
-        const linescore = await axios.get(`${MLB_API_BASE_URL}${GAME_ENDPOINT}/${gameId}/linescore`);
+        // Get game details from our games array
+        const selectedGame = games.find(game => game.id == gameId);
+        if (!selectedGame) {
+            throw new Error('Game not found');
+        }
+        
+        // Get boxscore and linescore data
+        const [boxscoreResponse, linescoreResponse] = await Promise.all([
+            axios.get(`${MLB_API_BASE_URL}${GAME_ENDPOINT}/${gameId}/boxscore`),
+            axios.get(`${MLB_API_BASE_URL}${GAME_ENDPOINT}/${gameId}/linescore`)
+        ]);
         
         currentGameData = {
             boxscore: boxscoreResponse.data,
-            linescore: linescore.data
+            linescore: linescoreResponse.data,
+            gameInfo: selectedGame
         };
         
         renderScoreboard();
@@ -211,11 +221,15 @@ function renderScoreboard() {
         return;
     }
     
-    const { boxscore, linescore } = currentGameData;
+    const { boxscore, linescore, gameInfo } = currentGameData;
     
-    // Set team names
-    document.getElementById('awayTeamName').textContent = linescore.teams.away.team.name;
-    document.getElementById('homeTeamName').textContent = linescore.teams.home.team.name;
+    // Set team names from our game info (which we know exists)
+    document.getElementById('awayTeamName').textContent = gameInfo.awayTeam;
+    document.getElementById('homeTeamName').textContent = gameInfo.homeTeam;
+    
+    // Set team names in detail section
+    document.getElementById('awayTeamNameDetail').textContent = gameInfo.awayTeam;
+    document.getElementById('homeTeamNameDetail').textContent = gameInfo.homeTeam;
     
     // Set innings scores
     const awayInningsElement = document.getElementById('awayInnings');
@@ -233,9 +247,13 @@ function renderScoreboard() {
         
         if (i < totalInnings) {
             const inning = linescore.innings[i];
-            awayInningScore.textContent = inning.away.runs || '0';
+            awayInningScore.textContent = inning.away.runs !== undefined ? inning.away.runs : '-';
             // Handle "X" for bottom of the inning that wasn't played
-            homeInningScore.textContent = inning.home.runs !== undefined ? inning.home.runs : 'X';
+            if (inning.home.runs !== undefined) {
+                homeInningScore.textContent = inning.home.runs;
+            } else {
+                homeInningScore.textContent = 'X';
+            }
         } else {
             awayInningScore.textContent = '-';
             homeInningScore.textContent = '-';
@@ -250,9 +268,9 @@ function renderScoreboard() {
     const awayHitsElement = document.createElement('div');
     const awayErrorsElement = document.createElement('div');
     
-    awayRunsElement.textContent = linescore.teams.away.runs || '0';
-    awayHitsElement.textContent = linescore.teams.away.hits || '0';
-    awayErrorsElement.textContent = linescore.teams.away.errors || '0';
+    awayRunsElement.textContent = gameInfo.awayScore || '0';
+    awayHitsElement.textContent = linescore.teams && linescore.teams.away ? (linescore.teams.away.hits || '0') : '0';
+    awayErrorsElement.textContent = linescore.teams && linescore.teams.away ? (linescore.teams.away.errors || '0') : '0';
     
     awayInningsElement.appendChild(awayRunsElement);
     awayInningsElement.appendChild(awayHitsElement);
@@ -262,9 +280,9 @@ function renderScoreboard() {
     const homeHitsElement = document.createElement('div');
     const homeErrorsElement = document.createElement('div');
     
-    homeRunsElement.textContent = linescore.teams.home.runs || '0';
-    homeHitsElement.textContent = linescore.teams.home.hits || '0';
-    homeErrorsElement.textContent = linescore.teams.home.errors || '0';
+    homeRunsElement.textContent = gameInfo.homeScore || '0';
+    homeHitsElement.textContent = linescore.teams && linescore.teams.home ? (linescore.teams.home.hits || '0') : '0';
+    homeErrorsElement.textContent = linescore.teams && linescore.teams.home ? (linescore.teams.home.errors || '0') : '0';
     
     homeInningsElement.appendChild(homeRunsElement);
     homeInningsElement.appendChild(homeHitsElement);
@@ -298,20 +316,20 @@ function renderScoreboard() {
 
 // Populate team details (batting and pitching)
 function populateTeamDetails(boxscore) {
+    if (!boxscore.teams) return;
+    
     const awayTeam = boxscore.teams.away;
     const homeTeam = boxscore.teams.home;
     
-    // Set team names in detail section
-    document.getElementById('awayTeamNameDetail').textContent = awayTeam.team.name;
-    document.getElementById('homeTeamNameDetail').textContent = homeTeam.team.name;
+    if (!awayTeam || !homeTeam) return;
     
     // Populate batting tables
-    populateBattingTable('awayBatting', awayTeam.batters, awayTeam.players);
-    populateBattingTable('homeBatting', homeTeam.batters, homeTeam.players);
+    populateBattingTable('awayBatting', awayTeam.batters || [], awayTeam.players || {});
+    populateBattingTable('homeBatting', homeTeam.batters || [], homeTeam.players || {});
     
     // Populate pitching tables
-    populatePitchingTable('awayPitching', awayTeam.pitchers, awayTeam.players);
-    populatePitchingTable('homePitching', homeTeam.pitchers, homeTeam.players);
+    populatePitchingTable('awayPitching', awayTeam.pitchers || [], awayTeam.players || {});
+    populatePitchingTable('homePitching', homeTeam.pitchers || [], homeTeam.players || {});
 }
 
 // Populate batting table
@@ -319,8 +337,20 @@ function populateBattingTable(tableId, batterIds, players) {
     const tableBody = document.querySelector(`#${tableId} tbody`);
     tableBody.innerHTML = '';
     
+    if (!batterIds.length) {
+        const row = document.createElement('tr');
+        const cell = document.createElement('td');
+        cell.colSpan = 5;
+        cell.textContent = 'No batting data available';
+        cell.style.textAlign = 'center';
+        row.appendChild(cell);
+        tableBody.appendChild(row);
+        return;
+    }
+    
     batterIds.forEach(batterId => {
-        const player = players[`ID${batterId}`];
+        const playerKey = `ID${batterId}`;
+        const player = players[playerKey];
         if (!player || !player.stats || !player.stats.batting) return;
         
         const stats = player.stats.batting;
@@ -329,7 +359,8 @@ function populateBattingTable(tableId, batterIds, players) {
         
         // Player name cell
         const nameCell = document.createElement('td');
-        nameCell.textContent = `${player.person.fullName} ${player.position.abbreviation}`;
+        const position = player.position ? player.position.abbreviation : '';
+        nameCell.textContent = `${player.person.fullName} ${position}`;
         row.appendChild(nameCell);
         
         // Stats cells
@@ -351,6 +382,16 @@ function populateBattingTable(tableId, batterIds, players) {
         
         tableBody.appendChild(row);
     });
+    
+    if (tableBody.children.length === 0) {
+        const row = document.createElement('tr');
+        const cell = document.createElement('td');
+        cell.colSpan = 5;
+        cell.textContent = 'No batting data available';
+        cell.style.textAlign = 'center';
+        row.appendChild(cell);
+        tableBody.appendChild(row);
+    }
 }
 
 // Populate pitching table
@@ -358,8 +399,20 @@ function populatePitchingTable(tableId, pitcherIds, players) {
     const tableBody = document.querySelector(`#${tableId} tbody`);
     tableBody.innerHTML = '';
     
+    if (!pitcherIds.length) {
+        const row = document.createElement('tr');
+        const cell = document.createElement('td');
+        cell.colSpan = 7;
+        cell.textContent = 'No pitching data available';
+        cell.style.textAlign = 'center';
+        row.appendChild(cell);
+        tableBody.appendChild(row);
+        return;
+    }
+    
     pitcherIds.forEach(pitcherId => {
-        const player = players[`ID${pitcherId}`];
+        const playerKey = `ID${pitcherId}`;
+        const player = players[playerKey];
         if (!player || !player.stats || !player.stats.pitching) return;
         
         const stats = player.stats.pitching;
@@ -398,6 +451,16 @@ function populatePitchingTable(tableId, pitcherIds, players) {
         
         tableBody.appendChild(row);
     });
+    
+    if (tableBody.children.length === 0) {
+        const row = document.createElement('tr');
+        const cell = document.createElement('td');
+        cell.colSpan = 7;
+        cell.textContent = 'No pitching data available';
+        cell.style.textAlign = 'center';
+        row.appendChild(cell);
+        tableBody.appendChild(row);
+    }
 }
 
 // Helper function to format date as YYYY-MM-DD
