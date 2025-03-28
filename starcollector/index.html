@@ -33,9 +33,13 @@
                         <button class="tab active" data-tab="daily">Daily</button>
                         <button class="tab" data-tab="oneoff">One-off</button>
                     </div>
-                    <button id="resetDailyBtn" class="reset-daily-btn">Reset Daily Tasks</button>
+                    <button id="reorderTasksBtn" class="reorder-tasks-btn">Reorder Tasks</button>
                 </div>
                 <div class="task-list" id="taskList"></div>
+                <div class="task-order-controls hidden" id="taskOrderControls">
+                    <button id="taskOrderSaveBtn" class="order-save-btn">Save Order</button>
+                    <button id="taskOrderCancelBtn" class="order-cancel-btn">Cancel</button>
+                </div>
             </section>
             
             <section class="rewards-section">
@@ -43,6 +47,11 @@
                 <div class="rewards-list" id="rewardsList"></div>
             </section>
         </main>
+        
+        <!-- Reset Daily Tasks Button at the bottom -->
+        <div class="bottom-actions">
+            <button id="resetDailyBtn" class="reset-daily-btn">Reset Daily Tasks</button>
+        </div>
         
         <!-- Settings Modal -->
         <div id="settingsModal" class="modal">
@@ -53,15 +62,15 @@
                 <div class="settings-section">
                     <h3>Theme</h3>
                     <div class="theme-options">
-    <button class="theme-btn active" data-theme="robots">Robots</button>
-    <button class="theme-btn" data-theme="dinosaur">Dinosaur</button>
-    <button class="theme-btn" data-theme="unicorn">Unicorn</button>
-    <button class="theme-btn" data-theme="pirate">Pirate</button>
-    <button class="theme-btn" data-theme="princess">Princess</button>
-    <button class="theme-btn" data-theme="space">Space</button>
-    <button class="theme-btn" data-theme="superhero">Superhero</button>
-    <button class="theme-btn" data-theme="ocean">Ocean</button>
-</div>
+                        <button class="theme-btn active" data-theme="robots">Robots</button>
+                        <button class="theme-btn" data-theme="dinosaur">Dinosaur</button>
+                        <button class="theme-btn" data-theme="unicorn">Unicorn</button>
+                        <button class="theme-btn" data-theme="pirate">Pirate</button>
+                        <button class="theme-btn" data-theme="princess">Princess</button>
+                        <button class="theme-btn" data-theme="space">Space</button>
+                        <button class="theme-btn" data-theme="superhero">Superhero</button>
+                        <button class="theme-btn" data-theme="ocean">Ocean</button>
+                    </div>
                 </div>
                 
                 <div class="settings-section">
@@ -86,8 +95,6 @@
                         <button id="checkAnswer">Check</button>
                     </div>
                 </div>
-                
-
             </div>
         </div>
         
@@ -118,43 +125,35 @@
                 </div>
                 
                 <div id="editTasks" class="edit-section">
-  <h3>Tasks</h3>
-  <div class="filter-options">
-    <button class="filter-btn active" data-filter="all">All Tasks</button>
-    <button class="filter-btn" data-filter="completed">Completed</button>
-  </div>
-  <div id="taskItems"></div>
-  <div class="edit-action-buttons">
-    <button id="addTaskBtn">Add Task</button>
-    <button id="resetCompletedTasksBtn" class="secondary-btn">Reset Completed One-offs</button>
-  </div>
-</div>
+                    <h3>Tasks</h3>
+                    <div class="filter-options">
+                        <button class="filter-btn active" data-filter="all">All Tasks</button>
+                        <button class="filter-btn" data-filter="completed">Completed</button>
+                    </div>
+                    <div id="taskItems"></div>
+                    <div class="edit-action-buttons">
+                        <button id="addTaskBtn">Add Task</button>
+                        <button id="resetCompletedTasksBtn" class="secondary-btn">Reset Completed One-offs</button>
+                    </div>
+                </div>
 
-<div id="editRewards" class="edit-section hidden">
-  <h3>Rewards</h3>
-  <div class="filter-options">
-    <button class="filter-btn active" data-filter="all">All Rewards</button>
-    <button class="filter-btn" data-filter="claimed">Claimed</button>
-  </div>
-  <div id="rewardItems"></div>
-  <div class="edit-action-buttons">
-    <button id="addRewardBtn">Add Reward</button>
-    <button id="resetClaimedRewardsBtn" class="secondary-btn">Reset Claimed Rewards</button>
-    <button id="clearFinishedRewardsBtn" class="danger-btn">Remove Claimed Rewards</button>
-  </div>
-</div>
-                
                 <div id="editRewards" class="edit-section hidden">
                     <h3>Rewards</h3>
+                    <div class="filter-options">
+                        <button class="filter-btn active" data-filter="all">All Rewards</button>
+                        <button class="filter-btn" data-filter="claimed">Claimed</button>
+                    </div>
                     <div id="rewardItems"></div>
                     <div class="edit-action-buttons">
                         <button id="addRewardBtn">Add Reward</button>
-                        <button id="clearFinishedRewardsBtn" class="secondary-btn">Clear Claimed Rewards</button>
+                        <button id="resetClaimedRewardsBtn" class="secondary-btn">Reset Claimed Rewards</button>
+                        <button id="clearFinishedRewardsBtn" class="danger-btn">Remove Claimed Rewards</button>
                     </div>
                 </div>
-              <div class="edit-actions-global">
-    <button id="resetDataBtn" class="danger-btn">Reset All Data</button>
-</div>
+                
+                <div class="edit-actions-global">
+                    <button id="resetDataBtn" class="danger-btn">Reset All Data</button>
+                </div>
             </div>
         </div>
         
