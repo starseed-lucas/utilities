@@ -3,7 +3,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const STATS_API_BASE_URL = 'https://statsapi.mlb.com/api/v1';
     const teamSelect = document.getElementById('team-select');
     const gameSelect = document.getElementById('game-select');
-    const loadingEl = document.getElementById('loading');
+    const teamLoadingIndicator = document.getElementById('team-loading');
+    const gameLoadingIndicator = document.getElementById('game-loading');
     const noDataEl = document.getElementById('no-data');
     
     // Cache for team data
@@ -16,7 +17,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize the application
     async function init() {
         try {
-            showLoading(); // Show loading initially
+            // Show team loading indicator
+            setTeamLoading(true);
             
             // Load teams
             await loadTeams();
@@ -25,10 +27,11 @@ document.addEventListener('DOMContentLoaded', () => {
             teamSelect.addEventListener('change', handleTeamChange);
             gameSelect.addEventListener('change', handleGameChange);
             
-            hideLoading(); // Hide loading after teams are loaded
+            // Hide team loading indicator
+            setTeamLoading(false);
         } catch (error) {
             console.error('Error initializing app:', error);
-            hideLoading();
+            setTeamLoading(false);
             showErrorMessage('FAILED TO INITIALIZE THE APPLICATION. PLEASE TRY AGAIN LATER.');
         }
     }
@@ -75,7 +78,6 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Reset scoreboard elements
         resetScoreboard();
-        showLoading();
         
         const teamId = teamSelect.value;
         
@@ -85,11 +87,17 @@ document.addEventListener('DOMContentLoaded', () => {
             defaultOption.value = '';
             defaultOption.textContent = 'SELECT A TEAM FIRST';
             gameSelect.appendChild(defaultOption);
-            hideLoading();
+            
+            // Update game info
+            updateGameInfo(null);
+            
             return;
         }
         
         try {
+            // Show game loading indicator
+            setGameLoading(true);
+            
             // Get current season and current date
             const today = new Date();
             
@@ -103,7 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Load team schedule (recent games)
             const response = await axios.get(
-                `${STATS_API_BASE_URL}/schedule?teamId=${teamId}&startDate=${startDateStr}&endDate=${endDateStr}&sportId=1&gameType=R,F,D,L,W&hydrate=team,game(content(summary)),linescore`
+                `${STATS_API_BASE_URL}/schedule?teamId=${teamId}&startDate=${startDateStr}&endDate=${endDateStr}&sportId=1&gameType=R,F,D,L,W&hydrate=team,game(content(summary)),linescore,venue`
             );
             
             // Get games
@@ -146,18 +154,20 @@ document.addEventListener('DOMContentLoaded', () => {
             // Enable game select
             gameSelect.disabled = false;
             
+            // Hide game loading indicator
+            setGameLoading(false);
+            
             // If there are games, select the first one
             if (selectedTeamGames.length > 0) {
                 gameSelect.value = 0;
                 handleGameChange();
             } else {
-                hideLoading();
                 showNoData();
             }
             
         } catch (error) {
             console.error('Error loading team games:', error);
-            hideLoading();
+            setGameLoading(false);
             showErrorMessage('FAILED TO LOAD TEAM GAMES. PLEASE TRY AGAIN LATER.');
         }
     }
@@ -165,19 +175,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // Handle game selection change
     function handleGameChange() {
         resetScoreboard();
-        showLoading();
         
         const gameIndex = gameSelect.value;
         
         if (!gameIndex) {
-            hideLoading();
+            updateGameInfo(null);
             return;
         }
         
         const game = selectedTeamGames[gameIndex];
         
         if (!game) {
-            hideLoading();
             showNoData();
             return;
         }
@@ -188,6 +196,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Render scoreboard with game data
     function renderScoreboard(game) {
         try {
+            // Set team names
+            updateTeamNames(game);
+            
+            // Update game info (status, date, location)
+            updateGameInfo(game);
+            
             // Update inning scores with animation
             if (game.linescore && game.linescore.innings) {
                 game.linescore.innings.forEach(inning => {
@@ -221,13 +235,74 @@ document.addEventListener('DOMContentLoaded', () => {
                 updateCount(game.linescore);
             }
             
-            hideLoading();
-            
         } catch (error) {
             console.error('Error rendering scoreboard:', error);
-            hideLoading();
             showErrorMessage('FAILED TO RENDER SCOREBOARD. PLEASE TRY ANOTHER GAME.');
         }
+    }
+    
+    // Update team names
+    function updateTeamNames(game) {
+        if (game) {
+            const homeTeamEl = document.getElementById('home-team');
+            const awayTeamEl = document.getElementById('away-team');
+            
+            homeTeamEl.textContent = game.teams.home.team.teamName.toUpperCase();
+            awayTeamEl.textContent = game.teams.away.team.teamName.toUpperCase();
+        }
+    }
+    
+    // Update game information (status, date, location)
+    function updateGameInfo(game) {
+        const statusLight = document.getElementById('game-status-light');
+        const statusText = document.getElementById('game-status-text');
+        const dateTimeEl = document.getElementById('game-date-time');
+        const locationEl = document.getElementById('game-location');
+        
+        if (!game) {
+            statusLight.className = 'game-status-light';
+            statusText.textContent = 'SELECT A GAME';
+            dateTimeEl.textContent = '';
+            locationEl.textContent = '';
+            return;
+        }
+        
+        // Set game date and time
+        const gameDate = new Date(game.gameDate);
+        dateTimeEl.textContent = formatDateTimeWithDay(gameDate);
+        
+        // Set game location
+        if (game.venue) {
+            locationEl.textContent = `${game.venue.name}, ${game.venue.location?.city || ''}`;
+        } else {
+            locationEl.textContent = '';
+        }
+        
+        // Set game status
+        let statusClass = '';
+        let statusDisplay = '';
+        
+        if (game.status) {
+            // Game status: scheduled, live, final
+            if (game.status.abstractGameState === 'Final') {
+                statusClass = 'final';
+                statusDisplay = 'FINAL';
+            } else if (game.status.abstractGameState === 'Live') {
+                statusClass = 'live';
+                
+                if (game.linescore && game.linescore.currentInningOrdinal) {
+                    statusDisplay = `LIVE - ${game.linescore.inningState} ${game.linescore.currentInningOrdinal}`;
+                } else {
+                    statusDisplay = 'LIVE';
+                }
+            } else {
+                statusClass = 'upcoming';
+                statusDisplay = 'UPCOMING';
+            }
+        }
+        
+        statusLight.className = `game-status-light ${statusClass}`;
+        statusText.textContent = statusDisplay;
     }
     
     // Update inning score with animation
@@ -256,14 +331,19 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Update base runners
     function updateBaseRunners(linescore) {
-        // First base
+        // Get base elements
         const firstBase = document.getElementById('first-base');
         const secondBase = document.getElementById('second-base');
         const thirdBase = document.getElementById('third-base');
         
         if (linescore.offense) {
+            // First base
             firstBase.classList.toggle('occupied', !!linescore.offense.first);
+            
+            // Second base
             secondBase.classList.toggle('occupied', !!linescore.offense.second);
+            
+            // Third base
             thirdBase.classList.toggle('occupied', !!linescore.offense.third);
         } else {
             // Clear bases if no offense data
@@ -279,26 +359,36 @@ document.addEventListener('DOMContentLoaded', () => {
         const balls = linescore.balls || 0;
         for (let i = 1; i <= 3; i++) {
             const ballElement = document.getElementById(`ball-${i}`);
-            ballElement.classList.toggle('active', i <= balls);
+            if (ballElement) {
+                ballElement.classList.toggle('active', i <= balls);
+            }
         }
         
         // Strikes
         const strikes = linescore.strikes || 0;
         for (let i = 1; i <= 2; i++) {
             const strikeElement = document.getElementById(`strike-${i}`);
-            strikeElement.classList.toggle('active', i <= strikes);
+            if (strikeElement) {
+                strikeElement.classList.toggle('active', i <= strikes);
+            }
         }
         
         // Outs
         const outs = linescore.outs || 0;
         for (let i = 1; i <= 3; i++) {
             const outElement = document.getElementById(`out-${i}`);
-            outElement.classList.toggle('active', i <= outs);
+            if (outElement) {
+                outElement.classList.toggle('active', i <= outs);
+            }
         }
     }
     
     // Reset scoreboard to default state
     function resetScoreboard() {
+        // Reset team names
+        document.getElementById('home-team').textContent = 'HOME';
+        document.getElementById('away-team').textContent = 'VISITOR';
+        
         // Reset inning scores
         for (let i = 1; i <= 9; i++) {
             document.getElementById(`home-${i}`).textContent = '0';
@@ -331,6 +421,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (strikeElement) strikeElement.classList.remove('active');
             }
         }
+        
+        // Hide any error messages
+        hideNoData();
     }
     
     // Helper function to format date as MM/DD/YYYY for display
@@ -341,6 +434,19 @@ document.addEventListener('DOMContentLoaded', () => {
         return `${month}/${day}/${year}`;
     }
     
+    // Helper function to format date and time with day of week for display
+    function formatDateTimeWithDay(date) {
+        const options = { 
+            weekday: 'short',
+            month: 'short', 
+            day: 'numeric', 
+            year: 'numeric',
+            hour: '2-digit', 
+            minute: '2-digit'
+        };
+        return date.toLocaleDateString('en-US', options).toUpperCase();
+    }
+    
     // Helper function to format date as YYYY-MM-DD for API
     function formatDateForAPI(date) {
         const year = date.getFullYear();
@@ -349,14 +455,22 @@ document.addEventListener('DOMContentLoaded', () => {
         return `${year}-${month}-${day}`;
     }
     
-    // Show loading state
-    function showLoading() {
-        loadingEl.classList.remove('hidden');
+    // Set team loading state
+    function setTeamLoading(isLoading) {
+        if (isLoading) {
+            teamLoadingIndicator.classList.add('active');
+        } else {
+            teamLoadingIndicator.classList.remove('active');
+        }
     }
     
-    // Hide loading state
-    function hideLoading() {
-        loadingEl.classList.add('hidden');
+    // Set game loading state
+    function setGameLoading(isLoading) {
+        if (isLoading) {
+            gameLoadingIndicator.classList.add('active');
+        } else {
+            gameLoadingIndicator.classList.remove('active');
+        }
     }
     
     // Show no data message

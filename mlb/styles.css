@@ -17,6 +17,9 @@
     --field-green: #3e7a47;
     --dirt-brown: #a67c52;
     --wood-grain: #9b7653;
+    --status-upcoming: #ffb30f;
+    --status-live: #37de2d;
+    --status-final: #ff4136;
 }
 
 body {
@@ -114,6 +117,100 @@ body::before {
     transform: translateY(-50%) rotate(20deg);
 }
 
+/* Controls Section */
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+    z-index: 10;
+    position: relative;
+}
+
+.select-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    position: relative;
+}
+
+label {
+    font-family: 'Graduate', serif;
+    color: #333;
+    font-weight: bold;
+    text-shadow: 1px 1px 0 rgba(255,255,255,0.5);
+}
+
+select {
+    padding: 0.75rem;
+    border: 3px solid var(--wood-grain);
+    border-radius: 4px;
+    background-color: #f5f5dc;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    font-family: 'Graduate', serif;
+    font-size: 1rem;
+    cursor: pointer;
+    min-width: 250px;
+    appearance: none;
+    background-image: 
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23333'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 20px;
+}
+
+select:focus {
+    outline: none;
+    border-color: #7a432a;
+    box-shadow: 0 4px 12px rgba(122, 67, 42, 0.2);
+}
+
+/* Loading Indicator */
+.loading-indicator {
+    position: absolute;
+    right: -35px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 30px;
+    height: 30px;
+    display: none;
+}
+
+.loading-indicator.active {
+    display: block;
+}
+
+.mini-baseball {
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    border-radius: 50%;
+    position: relative;
+    animation: spin 2s linear infinite;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.mini-baseball::before, .mini-baseball::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-image: 
+        linear-gradient(to right, transparent 48%, #d42929 48%, #d42929 52%, transparent 52%),
+        linear-gradient(to bottom, transparent 48%, #d42929 48%, #d42929 52%, transparent 52%);
+    opacity: 0.8;
+}
+
+.mini-baseball::after {
+    transform: rotate(45deg);
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
 /* Main Scoreboard */
 .scoreboard-wrapper {
     display: flex;
@@ -169,6 +266,69 @@ body::before {
     background-size: 20px 20px;
     pointer-events: none;
     opacity: 0.15;
+}
+
+/* Game Info Banner */
+.game-info-banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--scoreboard-dark);
+    padding: 0.75rem 1rem;
+    margin-bottom: 1.5rem;
+    border-radius: 4px;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+}
+
+.game-status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.game-status-light {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: #555;
+    box-shadow: 
+        inset 0 0 5px rgba(0,0,0,0.5),
+        0 0 5px rgba(0,0,0,0.3);
+}
+
+.game-status-light.upcoming {
+    background-color: var(--status-upcoming);
+    box-shadow: 0 0 10px var(--status-upcoming);
+}
+
+.game-status-light.live {
+    background-color: var(--status-live);
+    box-shadow: 0 0 10px var(--status-live);
+    animation: pulse 2s infinite;
+}
+
+.game-status-light.final {
+    background-color: var(--status-final);
+    box-shadow: 0 0 10px var(--status-final);
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+.game-status-text {
+    font-family: 'Staatliches', cursive;
+    font-size: 1.2rem;
+    color: var(--scoreboard-light);
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+
+.game-date-time, .game-location {
+    font-size: 0.9rem;
+    color: var(--scoreboard-light);
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
 }
 
 /* Inning Headers */
@@ -445,55 +605,8 @@ body::before {
     z-index: 0;
 }
 
-/* Controls Styling */
-.controls {
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    margin-bottom: 2rem;
-    z-index: 10;
-    position: relative;
-}
-
-.select-container {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
-label {
-    font-family: 'Graduate', serif;
-    color: #333;
-    font-weight: bold;
-    text-shadow: 1px 1px 0 rgba(255,255,255,0.5);
-}
-
-select {
-    padding: 0.75rem;
-    border: 3px solid var(--wood-grain);
-    border-radius: 4px;
-    background-color: #f5f5dc;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    font-family: 'Graduate', serif;
-    font-size: 1rem;
-    cursor: pointer;
-    min-width: 250px;
-    appearance: none;
-    background-image: 
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23333'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 10px center;
-    background-size: 20px;
-}
-
-select:focus {
-    outline: none;
-    border-color: #7a432a;
-    box-shadow: 0 4px 12px rgba(122, 67, 42, 0.2);
-}
-
-/* Loading and No Data States */
-.loading, .no-data {
+/* No Data State */
+.no-data {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -502,66 +615,13 @@ select:focus {
     text-align: center;
 }
 
-.loading {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.8);
-    z-index: 100;
-}
-
-.loading p, .no-data p {
+.no-data p {
     font-family: 'Staatliches', cursive;
     font-size: 1.8rem;
-    color: #fff;
+    color: #7a432a;
     margin-top: 2rem;
     letter-spacing: 2px;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-}
-
-.baseball {
-    width: 80px;
-    height: 80px;
-    background-color: #fff;
-    border-radius: 50%;
-    position: relative;
-    animation: spin 2s linear infinite;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-.baseball-seams {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-}
-
-.baseball-seams::before, .baseball-seams::after {
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    background-image: 
-        linear-gradient(to right, transparent 48%, #d42929 48%, #d42929 52%, transparent 52%),
-        linear-gradient(to bottom, transparent 48%, #d42929 48%, #d42929 52%, transparent 52%);
-    opacity: 0.8;
-}
-
-.baseball-seams::after {
-    transform: rotate(45deg);
-}
-
-.no-data {
-    color: #7a432a;
-    position: relative;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
 }
 
 .vintage-bat {
@@ -633,9 +693,56 @@ select:focus {
         radial-gradient(circle at 70% 35%, rgba(255,255,255,0.1) 2px, transparent 2px),
         radial-gradient(circle at 80% 25%, rgba(255,255,255,0.1) 2px, transparent 2px),
         radial-gradient(circle at 90% 30%, rgba(255,255,255,0.1) 2px, transparent 2px);
-    background-size: 100px 100px;
+        background-size: 100px 100px;
     background-repeat: repeat;
     opacity: 0.8;
+}
+
+/* Special Visual Effects */
+.inning-score.highlight, .team-stat.highlight {
+    animation: scoreHighlight 1.5s ease;
+}
+
+@keyframes scoreHighlight {
+    0% { background-color: var(--inning-bg); }
+    30% { background-color: #ffce00; color: #000; }
+    100% { background-color: var(--inning-bg); }
+}
+
+/* Vintage Wear and Tear Effects */
+.scoreboard::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('https://www.transparenttextures.com/patterns/scratches.png');
+    opacity: 0.1;
+    pointer-events: none;
+    z-index: 10;
+}
+
+/* Scoreboard Light Flicker Effect */
+.inning-score::after, .team-stat::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 100%);
+    opacity: 0;
+    animation: lightFlicker 8s infinite;
+}
+
+@keyframes lightFlicker {
+    0% { opacity: 0; }
+    48% { opacity: 0; }
+    50% { opacity: 0.1; }
+    52% { opacity: 0; }
+    98% { opacity: 0; }
+    100% { opacity: 0.1; }
 }
 
 /* Responsive Adjustments */
@@ -660,6 +767,12 @@ select:focus {
     .count-display {
         grid-template-columns: 1fr;
     }
+    
+    .game-info-banner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
 }
 
 @media (max-width: 768px) {
@@ -667,6 +780,10 @@ select:focus {
         flex-direction: column;
         align-items: center;
         gap: 1rem;
+    }
+    
+    .loading-indicator {
+        right: -30px;
     }
     
     .scoreboard {
@@ -745,75 +862,8 @@ select:focus {
     .stadium-banner h1 {
         font-size: 1.8rem;
     }
-}
-
-/* Special Visual Effects */
-.inning-score.highlight, .team-stat.highlight {
-    animation: scoreHighlight 1.5s ease;
-}
-
-@keyframes scoreHighlight {
-    0% { background-color: var(--inning-bg); }
-    30% { background-color: #ffce00; color: #000; }
-    100% { background-color: var(--inning-bg); }
-}
-
-/* Vintage Wear and Tear Effects */
-.scoreboard::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url('https://www.transparenttextures.com/patterns/scratches.png');
-    opacity: 0.1;
-    pointer-events: none;
-    z-index: 10;
-}
-
-/* Scoreboard Light Flicker Effect */
-.inning-score::after, .team-stat::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 100%);
-    opacity: 0;
-    animation: lightFlicker 8s infinite;
-}
-
-@keyframes lightFlicker {
-    0% { opacity: 0; }
-    48% { opacity: 0; }
-    50% { opacity: 0.1; }
-    52% { opacity: 0; }
-    98% { opacity: 0; }
-    100% { opacity: 0.1; }
-}
-
-/* Extra Baseball Elements */
-.team-name::before {
-    content: "⚾";
-    position: absolute;
-    left: 10px;
-    font-size: 1rem;
-    opacity: 0.5;
-}
-
-/* Retro Lighting Effect */
-.scoreboard-border::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: 
-        radial-gradient(circle at 10% 20%, rgba(255,255,255,0.05) 0%, transparent 20%),
-        radial-gradient(circle at 90% 80%, rgba(255,255,255,0.05) 0%, transparent 20%);
-    pointer-events: none;
-    border-radius: 10px;
+    
+    .game-status-text {
+        font-size: 1rem;
+    }
 }
