@@ -16,15 +16,20 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize the application
     async function init() {
         try {
+            showLoading(); // Show loading initially
+            
             // Load teams
             await loadTeams();
             
             // Set up event listeners
             teamSelect.addEventListener('change', handleTeamChange);
             gameSelect.addEventListener('change', handleGameChange);
+            
+            hideLoading(); // Hide loading after teams are loaded
         } catch (error) {
             console.error('Error initializing app:', error);
-            showErrorMessage('Failed to initialize the application. Please try again later.');
+            hideLoading();
+            showErrorMessage('FAILED TO INITIALIZE THE APPLICATION. PLEASE TRY AGAIN LATER.');
         }
     }
     
@@ -58,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         } catch (error) {
             console.error('Error loading teams:', error);
-            showErrorMessage('FAILED TO LOAD MLB TEAMS. PLEASE TRY AGAIN LATER.');
+            throw error; // Propagate error to init function
         }
     }
     
@@ -87,15 +92,14 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             // Get current season and current date
             const today = new Date();
-            const currentYear = today.getFullYear();
             
             // Set start date to 30 days ago to get recent games
             const startDate = new Date();
             startDate.setDate(today.getDate() - 30);
             
             // Format dates as YYYY-MM-DD
-            const startDateStr = formatDate(startDate);
-            const endDateStr = formatDate(today);
+            const startDateStr = formatDateForAPI(startDate);
+            const endDateStr = formatDateForAPI(today);
             
             // Load team schedule (recent games)
             const response = await axios.get(
@@ -252,18 +256,20 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Update base runners
     function updateBaseRunners(linescore) {
+        // First base
+        const firstBase = document.getElementById('first-base');
+        const secondBase = document.getElementById('second-base');
+        const thirdBase = document.getElementById('third-base');
+        
         if (linescore.offense) {
-            // First base
-            const firstBase = document.getElementById('first-base');
-            firstBase.classList.toggle('occupied', linescore.offense.first !== undefined);
-            
-            // Second base
-            const secondBase = document.getElementById('second-base');
-            secondBase.classList.toggle('occupied', linescore.offense.second !== undefined);
-            
-            // Third base
-            const thirdBase = document.getElementById('third-base');
-            thirdBase.classList.toggle('occupied', linescore.offense.third !== undefined);
+            firstBase.classList.toggle('occupied', !!linescore.offense.first);
+            secondBase.classList.toggle('occupied', !!linescore.offense.second);
+            thirdBase.classList.toggle('occupied', !!linescore.offense.third);
+        } else {
+            // Clear bases if no offense data
+            firstBase.classList.remove('occupied');
+            secondBase.classList.remove('occupied');
+            thirdBase.classList.remove('occupied');
         }
     }
     
@@ -314,18 +320,33 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Reset count
         for (let i = 1; i <= 3; i++) {
-            document.getElementById(`ball-${i}`).classList.remove('active');
-            if (i <= 2) document.getElementById(`strike-${i}`).classList.remove('active');
-            document.getElementById(`out-${i}`).classList.remove('active');
+            const ballElement = document.getElementById(`ball-${i}`);
+            if (ballElement) ballElement.classList.remove('active');
+            
+            const outElement = document.getElementById(`out-${i}`);
+            if (outElement) outElement.classList.remove('active');
+            
+            if (i <= 2) {
+                const strikeElement = document.getElementById(`strike-${i}`);
+                if (strikeElement) strikeElement.classList.remove('active');
+            }
         }
     }
     
-    // Helper function to format date as YYYY-MM-DD
+    // Helper function to format date as MM/DD/YYYY for display
     function formatDate(date) {
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const year = date.getFullYear();
+        return `${month}/${day}/${year}`;
+    }
+    
+    // Helper function to format date as YYYY-MM-DD for API
+    function formatDateForAPI(date) {
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, '0');
         const day = String(date.getDate()).padStart(2, '0');
-        return `${month}/${day}/${year}`;
+        return `${year}-${month}-${day}`;
     }
     
     // Show loading state
