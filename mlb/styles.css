@@ -867,3 +867,180 @@ select:focus {
         font-size: 1rem;
     }
 }
+
+/* Stadium Banner */
+.stadium-banner {
+    position: relative;
+    text-align: center;
+    margin-bottom: 2rem;
+    background-color: #dbd5c6;
+    padding: 1.5rem 0;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    border: 8px solid #a87d45;
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.stadium-banner h1 {
+    font-family: 'Staatliches', cursive;
+    font-size: 3.5rem;
+    color: #2d3a1f;
+    text-shadow: 3px 3px 0px rgba(0,0,0,0.1), 
+                 4px 4px 0px rgba(0,0,0,0.05);
+    letter-spacing: 3px;
+    transform: scale(1, 1.1);
+    position: relative;
+    padding: 0 1.5rem;
+}
+
+.stadium-banner h1::before {
+    content: "";
+    position: absolute;
+    top: -15px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background-color: #a87d45;
+    border-radius: 3px;
+}
+
+.stadium-banner h1::after {
+    content: "";
+    position: absolute;
+    bottom: -15px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background-color: #a87d45;
+    border-radius: 3px;
+}
+
+.stadium-banner::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('https://www.transparenttextures.com/patterns/wood-pattern.png');
+    opacity: 0.1;
+    pointer-events: none;
+}
+
+.banner-decoration {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.banner-decoration.left {
+    left: 20px;
+}
+
+.banner-decoration.right {
+    right: 20px;
+}
+
+.vintage-bat {
+    width: 80px;
+    height: 6px;
+    background-color: #8b5a2b;
+    border-radius: 3px;
+    position: relative;
+    transform: rotate(45deg);
+    box-shadow: 0 2px 3px rgba(0,0,0,0.3);
+}
+
+.banner-decoration.right .vintage-bat {
+    transform: rotate(-45deg);
+}
+
+.vintage-bat::before {
+    content: "";
+    position: absolute;
+    bottom: -3px;
+    left: 5px;
+    width: 15px;
+    height: 12px;
+    background-color: #8b5a2b;
+    border-radius: 2px;
+}
+
+.vintage-bat::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('https://www.transparenttextures.com/patterns/wood-pattern.png');
+    opacity: 0.4;
+    border-radius: 3px;
+}
+
+.vintage-ball {
+    width: 25px;
+    height: 25px;
+    background-color: white;
+    border-radius: 50%;
+    position: relative;
+    margin: 0 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+.vintage-ball::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-image: 
+        linear-gradient(
+            to right,
+            transparent 48%,
+            #d42929 48%,
+            #d42929 52%,
+            transparent 52%
+        ),
+        linear-gradient(
+            to bottom,
+            transparent 48%,
+            #d42929 48%,
+            #d42929 52%,
+            transparent 52%
+        );
+    opacity: 0.8;
+}
+
+.vintage-ball::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-image: linear-gradient(
+        135deg, 
+        rgba(255,255,255,0.5) 0%,
+        transparent 50%
+    );
+}
+
+@media (max-width: 768px) {
+    .stadium-banner h1 {
+        font-size: 2.5rem;
+    }
+    
+    .banner-decoration {
+        display: none;
+    }
+}
