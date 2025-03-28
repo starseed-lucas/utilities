@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MLB Scoreboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>MLB Scoreboard</h1>
+        </header>
+        
+        <div class="controls">
+            <div class="select-container">
+                <label for="teamSelect">Select Team:</label>
+                <select id="teamSelect"></select>
+            </div>
+            <div class="select-container">
+                <label for="gameSelect">Select Game:</label>
+                <select id="gameSelect"></select>
+            </div>
+        </div>
+        
+        <div class="scoreboard-container">
+            <div id="loading">Loading scoreboard data...</div>
+            <div id="scoreboard" class="hidden">
+                <!-- Innings Header -->
+                <div class="inning-header">
+                    <div class="team-name"></div>
+                    <div class="innings">
+                        <div>1</div>
+                        <div>2</div>
+                        <div>3</div>
+                        <div>4</div>
+                        <div>5</div>
+                        <div>6</div>
+                        <div>7</div>
+                        <div>8</div>
+                        <div>9</div>
+                        <div>R</div>
+                        <div>H</div>
+                        <div>E</div>
+                    </div>
+                </div>
+                
+                <!-- Away Team -->
+                <div class="team away">
+                    <div class="team-name" id="awayTeamName"></div>
+                    <div class="innings" id="awayInnings"></div>
+                </div>
+                
+                <!-- Home Team -->
+                <div class="team home">
+                    <div class="team-name" id="homeTeamName"></div>
+                    <div class="innings" id="homeInnings"></div>
+                </div>
+                
+                <!-- Game Info -->
+                <div class="game-info" id="gameInfo"></div>
+            </div>
+
+            <!-- Batting & Pitching Details -->
+            <div id="gameDetails" class="hidden">
+                <div class="teams-detail">
+                    <div class="team-detail">
+                        <h3 id="awayTeamNameDetail"></h3>
+                        <div class="detail-section">
+                            <h4>Batting</h4>
+                            <table id="awayBatting" class="detail-table">
+                                <thead>
+                                    <tr>
+                                        <th>Batter</th>
+                                        <th>AB</th>
+                                        <th>R</th>
+                                        <th>H</th>
+                                        <th>RBI</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                        <div class="detail-section">
+                            <h4>Pitching</h4>
+                            <table id="awayPitching" class="detail-table">
+                                <thead>
+                                    <tr>
+                                        <th>Pitcher</th>
+                                        <th>IP</th>
+                                        <th>H</th>
+                                        <th>R</th>
+                                        <th>ER</th>
+                                        <th>BB</th>
+                                        <th>SO</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="team-detail">
+                        <h3 id="homeTeamNameDetail"></h3>
+                        <div class="detail-section">
+                            <h4>Batting</h4>
+                            <table id="homeBatting" class="detail-table">
+                                <thead>
+                                    <tr>
+                                        <th>Batter</th>
+                                        <th>AB</th>
+                                        <th>R</th>
+                                        <th>H</th>
+                                        <th>RBI</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                        <div class="detail-section">
+                            <h4>Pitching</h4>
+                            <table id="homePitching" class="detail-table">
+                                <thead>
+                                    <tr>
+                                        <th>Pitcher</th>
+                                        <th>IP</th>
+                                        <th>H</th>
+                                        <th>R</th>
+                                        <th>ER</th>
+                                        <th>BB</th>
+                                        <th>SO</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Data provided by MLB Stats API</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
