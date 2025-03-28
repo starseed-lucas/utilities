@@ -3,125 +3,140 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Baseball Scoreboard</title>
+    <title>Vintage Baseball Scoreboard</title>
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Graduate&family=Staatliches&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>MLB Scoreboard</h1>
-        </header>
+    <div class="ballpark">
+        <div class="stadium-banner">
+            <h1>VINTAGE BALLPARK</h1>
+            <div class="baseball-stitches left"></div>
+            <div class="baseball-stitches right"></div>
+        </div>
+        
+        <div class="scoreboard-wrapper">
+            <div class="scoreboard-border">
+                <div class="scoreboard">
+                    <div class="scoreboard-header">
+                        <div class="inning-labels">
+                            <div class="empty-cell"></div>
+                            <div class="inning">1</div>
+                            <div class="inning">2</div>
+                            <div class="inning">3</div>
+                            <div class="inning">4</div>
+                            <div class="inning">5</div>
+                            <div class="inning">6</div>
+                            <div class="inning">7</div>
+                            <div class="inning">8</div>
+                            <div class="inning">9</div>
+                            <div class="stats-header">R</div>
+                            <div class="stats-header">H</div>
+                            <div class="stats-header">E</div>
+                        </div>
+                    </div>
+                    
+                    <div class="team-row visitor">
+                        <div class="team-name">VISITOR</div>
+                        <div class="inning-score" id="away-1">0</div>
+                        <div class="inning-score" id="away-2">0</div>
+                        <div class="inning-score" id="away-3">0</div>
+                        <div class="inning-score" id="away-4">0</div>
+                        <div class="inning-score" id="away-5">0</div>
+                        <div class="inning-score" id="away-6">0</div>
+                        <div class="inning-score" id="away-7">0</div>
+                        <div class="inning-score" id="away-8">0</div>
+                        <div class="inning-score" id="away-9">0</div>
+                        <div class="team-stat" id="away-runs">0</div>
+                        <div class="team-stat" id="away-hits">0</div>
+                        <div class="team-stat" id="away-errors">0</div>
+                    </div>
+                    
+                    <div class="team-row home">
+                        <div class="team-name">HOME</div>
+                        <div class="inning-score" id="home-1">0</div>
+                        <div class="inning-score" id="home-2">0</div>
+                        <div class="inning-score" id="home-3">0</div>
+                        <div class="inning-score" id="home-4">0</div>
+                        <div class="inning-score" id="home-5">0</div>
+                        <div class="inning-score" id="home-6">0</div>
+                        <div class="inning-score" id="home-7">0</div>
+                        <div class="inning-score" id="home-8">0</div>
+                        <div class="inning-score" id="home-9">0</div>
+                        <div class="team-stat" id="home-runs">0</div>
+                        <div class="team-stat" id="home-hits">0</div>
+                        <div class="team-stat" id="home-errors">0</div>
+                    </div>
+                    
+                    <div class="count-display">
+                        <div class="count-row">
+                            <div class="count-label">BALL</div>
+                            <div class="count-boxes balls">
+                                <div class="count-box" id="ball-1"></div>
+                                <div class="count-box" id="ball-2"></div>
+                                <div class="count-box" id="ball-3"></div>
+                            </div>
+                        </div>
+                        <div class="count-row">
+                            <div class="count-label">STRIKE</div>
+                            <div class="count-boxes strikes">
+                                <div class="count-box" id="strike-1"></div>
+                                <div class="count-box" id="strike-2"></div>
+                            </div>
+                        </div>
+                        <div class="count-row">
+                            <div class="count-label">OUT</div>
+                            <div class="count-boxes outs">
+                                <div class="count-box" id="out-1"></div>
+                                <div class="count-box" id="out-2"></div>
+                                <div class="count-box" id="out-3"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="diamond-container">
+                <div class="baseball-diamond">
+                    <div class="base first-base" id="first-base"></div>
+                    <div class="base second-base" id="second-base"></div>
+                    <div class="base third-base" id="third-base"></div>
+                    <div class="home-plate"></div>
+                    <div class="pitcher-mound"></div>
+                    <div class="outfield"></div>
+                </div>
+            </div>
+        </div>
         
         <div class="controls">
-            <div class="select-wrapper">
-                <label for="team-select">Select Team:</label>
+            <div class="select-container">
+                <label for="team-select">SELECT TEAM:</label>
                 <select id="team-select">
                     <option value="">Loading teams...</option>
                 </select>
             </div>
             
-            <div class="select-wrapper">
-                <label for="game-select">Select Game:</label>
+            <div class="select-container">
+                <label for="game-select">SELECT GAME:</label>
                 <select id="game-select" disabled>
                     <option value="">Select a team first</option>
                 </select>
             </div>
         </div>
         
-        <div class="scoreboard-container">
-            <div id="loading" class="loading">Loading scoreboard data...</div>
-            
-            <div id="scoreboard" class="scoreboard hidden">
-                <div class="scoreboard-header">
-                    <div class="teams">
-                        <div class="team-info away">
-                            <div class="team-name" id="away-team-name"></div>
-                            <div class="team-record" id="away-team-record"></div>
-                        </div>
-                        <div class="team-info home">
-                            <div class="team-name" id="home-team-name"></div>
-                            <div class="team-record" id="home-team-record"></div>
-                        </div>
-                    </div>
-                    <div class="game-info">
-                        <div id="game-status"></div>
-                        <div id="game-date"></div>
-                    </div>
-                </div>
-                
-                <div class="score-container">
-                    <div class="inning-headers">
-                        <div class="team-label"></div>
-                        <div class="inning">1</div>
-                        <div class="inning">2</div>
-                        <div class="inning">3</div>
-                        <div class="inning">4</div>
-                        <div class="inning">5</div>
-                        <div class="inning">6</div>
-                        <div class="inning">7</div>
-                        <div class="inning">8</div>
-                        <div class="inning">9</div>
-                        <div class="total">R</div>
-                        <div class="total">H</div>
-                        <div class="total">E</div>
-                    </div>
-                    
-                    <div class="team-score away-score">
-                        <div class="team-abbrev" id="away-team-abbrev"></div>
-                        <div class="inning-score" id="away-1">-</div>
-                        <div class="inning-score" id="away-2">-</div>
-                        <div class="inning-score" id="away-3">-</div>
-                        <div class="inning-score" id="away-4">-</div>
-                        <div class="inning-score" id="away-5">-</div>
-                        <div class="inning-score" id="away-6">-</div>
-                        <div class="inning-score" id="away-7">-</div>
-                        <div class="inning-score" id="away-8">-</div>
-                        <div class="inning-score" id="away-9">-</div>
-                        <div class="total-score" id="away-runs">-</div>
-                        <div class="total-score" id="away-hits">-</div>
-                        <div class="total-score" id="away-errors">-</div>
-                    </div>
-                    
-                    <div class="team-score home-score">
-                        <div class="team-abbrev" id="home-team-abbrev"></div>
-                        <div class="inning-score" id="home-1">-</div>
-                        <div class="inning-score" id="home-2">-</div>
-                        <div class="inning-score" id="home-3">-</div>
-                        <div class="inning-score" id="home-4">-</div>
-                        <div class="inning-score" id="home-5">-</div>
-                        <div class="inning-score" id="home-6">-</div>
-                        <div class="inning-score" id="home-7">-</div>
-                        <div class="inning-score" id="home-8">-</div>
-                        <div class="inning-score" id="home-9">-</div>
-                        <div class="total-score" id="home-runs">-</div>
-                        <div class="total-score" id="home-hits">-</div>
-                        <div class="total-score" id="home-errors">-</div>
-                    </div>
-                </div>
-                
-                <div class="game-status-detail">
-                    <div id="current-play"></div>
-                    <div class="base-status">
-                        <div class="diamond">
-                            <div class="base" id="first-base"></div>
-                            <div class="base" id="second-base"></div>
-                            <div class="base" id="third-base"></div>
-                            <div class="home-plate"></div>
-                        </div>
-                        <div class="count">
-                            <div class="count-item">Balls: <span id="balls">0</span></div>
-                            <div class="count-item">Strikes: <span id="strikes">0</span></div>
-                            <div class="count-item">Outs: <span id="outs">0</span></div>
-                        </div>
-                    </div>
-                </div>
+        <div id="loading" class="loading">
+            <div class="baseball">
+                <div class="baseball-seams"></div>
             </div>
-            
-            <div id="no-data" class="no-data hidden">
-                No game data available for the selected team/game.
-            </div>
+            <p>LOADING GAME DATA...</p>
         </div>
+        
+        <div id="no-data" class="no-data hidden">
+            <p>NO GAME DATA AVAILABLE</p>
+            <div class="vintage-bat"></div>
+        </div>
+        
+        <div class="stadium-crowd"></div>
     </div>
     
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>

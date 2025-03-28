@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const teamSelect = document.getElementById('team-select');
     const gameSelect = document.getElementById('game-select');
     const loadingEl = document.getElementById('loading');
-    const scoreboardEl = document.getElementById('scoreboard');
     const noDataEl = document.getElementById('no-data');
     
     // Cache for team data
@@ -41,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Add default option
             const defaultOption = document.createElement('option');
             defaultOption.value = '';
-            defaultOption.textContent = 'Select a team';
+            defaultOption.textContent = 'SELECT A TEAM';
             teamSelect.appendChild(defaultOption);
             
             // Sort teams alphabetically
@@ -54,12 +53,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 const option = document.createElement('option');
                 option.value = team.id;
-                option.textContent = team.name;
+                option.textContent = team.name.toUpperCase();
                 teamSelect.appendChild(option);
             });
         } catch (error) {
             console.error('Error loading teams:', error);
-            showErrorMessage('Failed to load MLB teams. Please try again later.');
+            showErrorMessage('FAILED TO LOAD MLB TEAMS. PLEASE TRY AGAIN LATER.');
         }
     }
     
@@ -69,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
         gameSelect.innerHTML = '';
         gameSelect.disabled = true;
         
-        // Show loading
+        // Reset scoreboard elements
         resetScoreboard();
         showLoading();
         
@@ -79,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // No team selected
             const defaultOption = document.createElement('option');
             defaultOption.value = '';
-            defaultOption.textContent = 'Select a team first';
+            defaultOption.textContent = 'SELECT A TEAM FIRST';
             gameSelect.appendChild(defaultOption);
             hideLoading();
             return;
@@ -122,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Populate game select
             const defaultOption = document.createElement('option');
             defaultOption.value = '';
-            defaultOption.textContent = 'Select a game';
+            defaultOption.textContent = 'SELECT A GAME';
             gameSelect.appendChild(defaultOption);
             
             selectedTeamGames.forEach((game, index) => {
@@ -132,11 +131,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     : game.teams.away.team.name;
                 
                 const isHome = game.teams.home.team.id == teamId;
-                const vsAt = isHome ? 'vs' : '@';
+                const vsAt = isHome ? 'VS' : '@';
                 
                 const option = document.createElement('option');
                 option.value = index; // Use index as value
-                option.textContent = `${formatDate(gameDate)} ${vsAt} ${opponent}`;
+                option.textContent = `${formatDate(gameDate)} ${vsAt} ${opponent.toUpperCase()}`;
                 gameSelect.appendChild(option);
             });
             
@@ -155,7 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (error) {
             console.error('Error loading team games:', error);
             hideLoading();
-            showErrorMessage('Failed to load team games. Please try again later.');
+            showErrorMessage('FAILED TO LOAD TEAM GAMES. PLEASE TRY AGAIN LATER.');
         }
     }
     
@@ -185,102 +184,139 @@ document.addEventListener('DOMContentLoaded', () => {
     // Render scoreboard with game data
     function renderScoreboard(game) {
         try {
-            // Get team data
-            const homeTeam = game.teams.home.team;
-            const awayTeam = game.teams.away.team;
-            
-            // Set team names and records
-            document.getElementById('home-team-name').textContent = homeTeam.name;
-            document.getElementById('away-team-name').textContent = awayTeam.name;
-            
-            document.getElementById('home-team-record').textContent = `(${game.teams.home.leagueRecord.wins}-${game.teams.home.leagueRecord.losses})`;
-            document.getElementById('away-team-record').textContent = `(${game.teams.away.leagueRecord.wins}-${game.teams.away.leagueRecord.losses})`;
-            
-            // Set team abbreviations
-            document.getElementById('home-team-abbrev').textContent = homeTeam.abbreviation || homeTeam.teamName;
-            document.getElementById('away-team-abbrev').textContent = awayTeam.abbreviation || awayTeam.teamName;
-            
-            // Set game status and date
-            const gameDate = new Date(game.gameDate);
-            document.getElementById('game-date').textContent = formatDateTime(gameDate);
-            
-            let gameStatus = 'Scheduled';
-            if (game.status) {
-                if (game.status.abstractGameState === 'Final') {
-                    gameStatus = 'Final';
-                } else if (game.status.abstractGameState === 'Live') {
-                    gameStatus = `In Progress - ${game.linescore?.currentInningOrdinal || ''} ${game.linescore?.inningState || ''}`;
-                }
-            }
-            document.getElementById('game-status').textContent = gameStatus;
-            
-            // Set runs, hits, errors
-            if (game.linescore) {
-                document.getElementById('home-runs').textContent = game.linescore.teams.home.runs || '0';
-                document.getElementById('away-runs').textContent = game.linescore.teams.away.runs || '0';
-                
-                document.getElementById('home-hits').textContent = game.linescore.teams.home.hits || '0';
-                document.getElementById('away-hits').textContent = game.linescore.teams.away.hits || '0';
-                
-                document.getElementById('home-errors').textContent = game.linescore.teams.home.errors || '0';
-                document.getElementById('away-errors').textContent = game.linescore.teams.away.errors || '0';
-                
-                // Set inning scores
-                if (game.linescore.innings) {
-                    game.linescore.innings.forEach(inning => {
-                        const inningNum = inning.num;
-                        if (inningNum <= 9) {
-                            if (inning.home) {
-                                document.getElementById(`home-${inningNum}`).textContent = inning.home.runs || '0';
-                            }
-                            if (inning.away) {
-                                document.getElementById(`away-${inningNum}`).textContent = inning.away.runs || '0';
-                            }
+            // Update inning scores with animation
+            if (game.linescore && game.linescore.innings) {
+                game.linescore.innings.forEach(inning => {
+                    const inningNum = inning.num;
+                    if (inningNum <= 9) {
+                        if (inning.home) {
+                            updateInningScore('home', inningNum, inning.home.runs || 0);
                         }
-                    });
-                }
-                
-                // Set base status (for live games)
-                if (game.linescore.offense) {
-                    // Set bases
-                    if (game.linescore.offense.first) {
-                        document.getElementById('first-base').classList.add('occupied');
+                        if (inning.away) {
+                            updateInningScore('away', inningNum, inning.away.runs || 0);
+                        }
                     }
-                    if (game.linescore.offense.second) {
-                        document.getElementById('second-base').classList.add('occupied');
-                    }
-                    if (game.linescore.offense.third) {
-                        document.getElementById('third-base').classList.add('occupied');
-                    }
-                    
-                    // Set count
-                    document.getElementById('balls').textContent = game.linescore.balls || '0';
-                    document.getElementById('strikes').textContent = game.linescore.strikes || '0';
-                    document.getElementById('outs').textContent = game.linescore.outs || '0';
-                }
-                
-                // Set current play
-                let currentPlay = 'No current play information available';
-                if (game.linescore.currentInningOrdinal && game.linescore.inningState) {
-                    currentPlay = `${game.linescore.inningState} ${game.linescore.currentInningOrdinal}`;
-                    
-                    if (game.linescore.offense && game.linescore.defense) {
-                        const offenseTeam = game.linescore.offense.team.name;
-                        const defenseTeam = game.linescore.defense.team.name;
-                        currentPlay += ` - ${offenseTeam} batting, ${defenseTeam} fielding`;
-                    }
-                }
-                document.getElementById('current-play').textContent = currentPlay;
+                });
             }
             
-            // Show scoreboard
+            // Update totals
+            if (game.linescore) {
+                updateTotalScore('home', 'runs', game.linescore.teams.home.runs || 0);
+                updateTotalScore('away', 'runs', game.linescore.teams.away.runs || 0);
+                
+                updateTotalScore('home', 'hits', game.linescore.teams.home.hits || 0);
+                updateTotalScore('away', 'hits', game.linescore.teams.away.hits || 0);
+                
+                updateTotalScore('home', 'errors', game.linescore.teams.home.errors || 0);
+                updateTotalScore('away', 'errors', game.linescore.teams.away.errors || 0);
+                
+                // Update base runners
+                updateBaseRunners(game.linescore);
+                
+                // Update count
+                updateCount(game.linescore);
+            }
+            
             hideLoading();
-            showScoreboard();
             
         } catch (error) {
             console.error('Error rendering scoreboard:', error);
             hideLoading();
-            showErrorMessage('Failed to render scoreboard. Please try another game.');
+            showErrorMessage('FAILED TO RENDER SCOREBOARD. PLEASE TRY ANOTHER GAME.');
+        }
+    }
+    
+    // Update inning score with animation
+    function updateInningScore(team, inning, score) {
+        const element = document.getElementById(`${team}-${inning}`);
+        if (element) {
+            element.textContent = score;
+            element.classList.add('highlight');
+            setTimeout(() => {
+                element.classList.remove('highlight');
+            }, 1500);
+        }
+    }
+    
+    // Update total score with animation
+    function updateTotalScore(team, type, score) {
+        const element = document.getElementById(`${team}-${type}`);
+        if (element) {
+            element.textContent = score;
+            element.classList.add('highlight');
+            setTimeout(() => {
+                element.classList.remove('highlight');
+            }, 1500);
+        }
+    }
+    
+    // Update base runners
+    function updateBaseRunners(linescore) {
+        if (linescore.offense) {
+            // First base
+            const firstBase = document.getElementById('first-base');
+            firstBase.classList.toggle('occupied', linescore.offense.first !== undefined);
+            
+            // Second base
+            const secondBase = document.getElementById('second-base');
+            secondBase.classList.toggle('occupied', linescore.offense.second !== undefined);
+            
+            // Third base
+            const thirdBase = document.getElementById('third-base');
+            thirdBase.classList.toggle('occupied', linescore.offense.third !== undefined);
+        }
+    }
+    
+    // Update count (balls, strikes, outs)
+    function updateCount(linescore) {
+        // Balls
+        const balls = linescore.balls || 0;
+        for (let i = 1; i <= 3; i++) {
+            const ballElement = document.getElementById(`ball-${i}`);
+            ballElement.classList.toggle('active', i <= balls);
+        }
+        
+        // Strikes
+        const strikes = linescore.strikes || 0;
+        for (let i = 1; i <= 2; i++) {
+            const strikeElement = document.getElementById(`strike-${i}`);
+            strikeElement.classList.toggle('active', i <= strikes);
+        }
+        
+        // Outs
+        const outs = linescore.outs || 0;
+        for (let i = 1; i <= 3; i++) {
+            const outElement = document.getElementById(`out-${i}`);
+            outElement.classList.toggle('active', i <= outs);
+        }
+    }
+    
+    // Reset scoreboard to default state
+    function resetScoreboard() {
+        // Reset inning scores
+        for (let i = 1; i <= 9; i++) {
+            document.getElementById(`home-${i}`).textContent = '0';
+            document.getElementById(`away-${i}`).textContent = '0';
+        }
+        
+        // Reset totals
+        document.getElementById('home-runs').textContent = '0';
+        document.getElementById('away-runs').textContent = '0';
+        document.getElementById('home-hits').textContent = '0';
+        document.getElementById('away-hits').textContent = '0';
+        document.getElementById('home-errors').textContent = '0';
+        document.getElementById('away-errors').textContent = '0';
+        
+        // Reset bases
+        document.getElementById('first-base').classList.remove('occupied');
+        document.getElementById('second-base').classList.remove('occupied');
+        document.getElementById('third-base').classList.remove('occupied');
+        
+        // Reset count
+        for (let i = 1; i <= 3; i++) {
+            document.getElementById(`ball-${i}`).classList.remove('active');
+            if (i <= 2) document.getElementById(`strike-${i}`).classList.remove('active');
+            document.getElementById(`out-${i}`).classList.remove('active');
         }
     }
     
@@ -289,27 +325,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, '0');
         const day = String(date.getDate()).padStart(2, '0');
-        return `${year}-${month}-${day}`;
-    }
-    
-    // Helper function to format date and time
-    function formatDateTime(date) {
-        const options = { 
-            weekday: 'short', 
-            year: 'numeric', 
-            month: 'short', 
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
-        };
-        return date.toLocaleDateString('en-US', options);
+        return `${month}/${day}/${year}`;
     }
     
     // Show loading state
     function showLoading() {
         loadingEl.classList.remove('hidden');
-        scoreboardEl.classList.add('hidden');
-        noDataEl.classList.add('hidden');
     }
     
     // Hide loading state
@@ -317,49 +338,19 @@ document.addEventListener('DOMContentLoaded', () => {
         loadingEl.classList.add('hidden');
     }
     
-    // Show scoreboard
-    function showScoreboard() {
-        scoreboardEl.classList.remove('hidden');
-        noDataEl.classList.add('hidden');
-    }
-    
     // Show no data message
     function showNoData() {
         noDataEl.classList.remove('hidden');
-        scoreboardEl.classList.add('hidden');
     }
     
-    // Reset scoreboard to default state
-    function resetScoreboard() {
-        // Reset inning scores
-        for (let i = 1; i <= 9; i++) {
-            document.getElementById(`home-${i}`).textContent = '-';
-            document.getElementById(`away-${i}`).textContent = '-';
-        }
-        
-        // Reset totals
-        document.getElementById('home-runs').textContent = '-';
-        document.getElementById('away-runs').textContent = '-';
-        document.getElementById('home-hits').textContent = '-';
-        document.getElementById('away-hits').textContent = '-';
-        document.getElementById('home-errors').textContent = '-';
-        document.getElementById('away-errors').textContent = '-';
-        
-        // Reset bases
-        document.getElementById('first-base').classList.remove('occupied');
-        document.getElementById('second-base').classList.remove('occupied');
-        document.getElementById('third-base').classList.remove('occupied');
-        
-        // Reset count
-        document.getElementById('balls').textContent = '0';
-        document.getElementById('strikes').textContent = '0';
-        document.getElementById('outs').textContent = '0';
+    // Hide no data message
+    function hideNoData() {
+        noDataEl.classList.add('hidden');
     }
     
     // Show error message
     function showErrorMessage(message) {
-        noDataEl.textContent = message;
+        noDataEl.innerHTML = `<p>${message}</p><div class="vintage-bat"></div>`;
         noDataEl.classList.remove('hidden');
-        scoreboardEl.classList.add('hidden');
     }
 });
