@@ -1,0 +1,331 @@
+/* Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+h1 {
+    color: #0a3161;
+    font-size: 2.5rem;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.1);
+}
+
+/* Controls */
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.select-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-width: 200px;
+}
+
+label {
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    font-size: 0.9rem;
+    color: #555;
+}
+
+select {
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    font-size: 1rem;
+    cursor: pointer;
+    transition: border-color 0.3s;
+}
+
+select:hover {
+    border-color: #bbb;
+}
+
+select:focus {
+    outline: none;
+    border-color: #0a3161;
+    box-shadow: 0 1px 3px rgba(10, 49, 97, 0.2);
+}
+
+/* Scoreboard */
+.scoreboard-container {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    overflow: hidden;
+    position: relative;
+}
+
+.loading, .no-data {
+    padding: 3rem;
+    text-align: center;
+    font-size: 1.2rem;
+    color: #777;
+}
+
+.hidden {
+    display: none;
+}
+
+.scoreboard {
+    padding: 2rem;
+}
+
+.scoreboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.teams {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.team-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.team-name {
+    font-family: 'Roboto Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+}
+
+.away .team-name {
+    color: #e41134;
+}
+
+.home .team-name {
+    color: #0a3161;
+}
+
+.team-record {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.game-info {
+    text-align: right;
+}
+
+#game-status {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+#game-date {
+    font-size: 0.9rem;
+    color: #777;
+}
+
+/* Score Table */
+.score-container {
+    margin-bottom: 2rem;
+    overflow-x: auto;
+}
+
+.inning-headers, .team-score {
+    display: grid;
+    grid-template-columns: 60px repeat(9, 40px) repeat(3, 40px);
+    gap: 1px;
+}
+
+.inning-headers {
+    margin-bottom: 1px;
+    background-color: #f5f5f5;
+    color: #555;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.inning-headers > div, .team-score > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    padding: 0.5rem;
+}
+
+.team-score {
+    background-color: #f9f9f9;
+    font-family: 'Roboto Condensed', sans-serif;
+}
+
+.team-abbrev {
+    font-weight: bold;
+    justify-content: flex-start !important;
+    padding-left: 1rem !important;
+}
+
+.away-score .team-abbrev {
+    color: #e41134;
+}
+
+.home-score .team-abbrev {
+    color: #0a3161;
+}
+
+.inning-score, .total-score {
+    font-size: 1.2rem;
+}
+
+.total {
+    background-color: #0a3161;
+    color: white;
+}
+
+.total-score {
+    font-weight: bold;
+    background-color: #f0f0f0;
+}
+
+/* Game Status Detail */
+.game-status-detail {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    background-color: #f9f9f9;
+    border-radius: 6px;
+}
+
+#current-play {
+    flex: 1;
+    font-size: 1.1rem;
+}
+
+.base-status {
+    display: flex;
+    gap: 2rem;
+}
+
+.diamond {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    transform: rotate(45deg);
+}
+
+.base {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: #ddd;
+    border: 2px solid #aaa;
+}
+
+.base.occupied {
+    background-color: #e41134;
+    border-color: #c01025;
+}
+
+#first-base {
+    bottom: 0;
+    right: 0;
+}
+
+#second-base {
+    top: 0;
+    right: 0;
+}
+
+#third-base {
+    top: 0;
+    left: 0;
+}
+
+.home-plate {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    bottom: 0;
+    left: 0;
+    background-color: #0a3161;
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+}
+
+.count {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.count-item {
+    font-weight: bold;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+    }
+    
+    .controls {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .select-wrapper {
+        width: 100%;
+    }
+    
+    .scoreboard-header {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+    
+    .game-info {
+        text-align: left;
+    }
+    
+    .inning-headers, .team-score {
+        grid-template-columns: 50px repeat(9, 30px) repeat(3, 30px);
+    }
+    
+    .inning-headers > div, .team-score > div {
+        height: 35px;
+        font-size: 0.85rem;
+    }
+    
+    .game-status-detail {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+    
+    .diamond {
+        width: 80px;
+        height: 80px;
+    }
+}
