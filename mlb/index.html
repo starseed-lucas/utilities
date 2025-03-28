@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baseball Scoreboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>MLB Scoreboard</h1>
+        </header>
+        
+        <div class="controls">
+            <div class="select-wrapper">
+                <label for="team-select">Select Team:</label>
+                <select id="team-select">
+                    <option value="">Loading teams...</option>
+                </select>
+            </div>
+            
+            <div class="select-wrapper">
+                <label for="game-select">Select Game:</label>
+                <select id="game-select" disabled>
+                    <option value="">Select a team first</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="scoreboard-container">
+            <div id="loading" class="loading">Loading scoreboard data...</div>
+            
+            <div id="scoreboard" class="scoreboard hidden">
+                <div class="scoreboard-header">
+                    <div class="teams">
+                        <div class="team-info away">
+                            <div class="team-name" id="away-team-name"></div>
+                            <div class="team-record" id="away-team-record"></div>
+                        </div>
+                        <div class="team-info home">
+                            <div class="team-name" id="home-team-name"></div>
+                            <div class="team-record" id="home-team-record"></div>
+                        </div>
+                    </div>
+                    <div class="game-info">
+                        <div id="game-status"></div>
+                        <div id="game-date"></div>
+                    </div>
+                </div>
+                
+                <div class="score-container">
+                    <div class="inning-headers">
+                        <div class="team-label"></div>
+                        <div class="inning">1</div>
+                        <div class="inning">2</div>
+                        <div class="inning">3</div>
+                        <div class="inning">4</div>
+                        <div class="inning">5</div>
+                        <div class="inning">6</div>
+                        <div class="inning">7</div>
+                        <div class="inning">8</div>
+                        <div class="inning">9</div>
+                        <div class="total">R</div>
+                        <div class="total">H</div>
+                        <div class="total">E</div>
+                    </div>
+                    
+                    <div class="team-score away-score">
+                        <div class="team-abbrev" id="away-team-abbrev"></div>
+                        <div class="inning-score" id="away-1">-</div>
+                        <div class="inning-score" id="away-2">-</div>
+                        <div class="inning-score" id="away-3">-</div>
+                        <div class="inning-score" id="away-4">-</div>
+                        <div class="inning-score" id="away-5">-</div>
+                        <div class="inning-score" id="away-6">-</div>
+                        <div class="inning-score" id="away-7">-</div>
+                        <div class="inning-score" id="away-8">-</div>
+                        <div class="inning-score" id="away-9">-</div>
+                        <div class="total-score" id="away-runs">-</div>
+                        <div class="total-score" id="away-hits">-</div>
+                        <div class="total-score" id="away-errors">-</div>
+                    </div>
+                    
+                    <div class="team-score home-score">
+                        <div class="team-abbrev" id="home-team-abbrev"></div>
+                        <div class="inning-score" id="home-1">-</div>
+                        <div class="inning-score" id="home-2">-</div>
+                        <div class="inning-score" id="home-3">-</div>
+                        <div class="inning-score" id="home-4">-</div>
+                        <div class="inning-score" id="home-5">-</div>
+                        <div class="inning-score" id="home-6">-</div>
+                        <div class="inning-score" id="home-7">-</div>
+                        <div class="inning-score" id="home-8">-</div>
+                        <div class="inning-score" id="home-9">-</div>
+                        <div class="total-score" id="home-runs">-</div>
+                        <div class="total-score" id="home-hits">-</div>
+                        <div class="total-score" id="home-errors">-</div>
+                    </div>
+                </div>
+                
+                <div class="game-status-detail">
+                    <div id="current-play"></div>
+                    <div class="base-status">
+                        <div class="diamond">
+                            <div class="base" id="first-base"></div>
+                            <div class="base" id="second-base"></div>
+                            <div class="base" id="third-base"></div>
+                            <div class="home-plate"></div>
+                        </div>
+                        <div class="count">
+                            <div class="count-item">Balls: <span id="balls">0</span></div>
+                            <div class="count-item">Strikes: <span id="strikes">0</span></div>
+                            <div class="count-item">Outs: <span id="outs">0</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="no-data" class="no-data hidden">
+                No game data available for the selected team/game.
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
