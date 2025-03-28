@@ -1,0 +1,246 @@
+/* Base Styles */
+:root {
+    --primary-color: #0a3161;
+    --secondary-color: #e31837;
+    --bg-color: #f4f7f9;
+    --text-color: #333;
+    --border-color: #ddd;
+    --highlight-color: #f8f8f8;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --border-radius: 6px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+h1 {
+    color: var(--primary-color);
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+/* Controls */
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.select-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+label {
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+select {
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background-color: white;
+    min-width: 200px;
+    font-size: 1rem;
+    box-shadow: var(--shadow);
+}
+
+/* Scoreboard */
+.scoreboard-container {
+    background-color: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+#loading {
+    text-align: center;
+    font-size: 1.2rem;
+    padding: 2rem;
+    color: var(--primary-color);
+}
+
+.hidden {
+    display: none;
+}
+
+.inning-header, .team {
+    display: flex;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.inning-header {
+    font-weight: bold;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+}
+
+.team-name {
+    width: 180px;
+    padding: 0.75rem 1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+}
+
+.innings {
+    display: flex;
+    flex: 1;
+}
+
+.innings div {
+    width: 30px;
+    text-align: center;
+    padding: 0.75rem 0;
+    border-left: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.team .innings div {
+    border-left: 1px solid var(--border-color);
+}
+
+.team.away {
+    background-color: #f0f0f0;
+}
+
+.team.home {
+    background-color: var(--highlight-color);
+}
+
+.game-info {
+    padding: 1rem;
+    font-size: 0.9rem;
+    text-align: center;
+    color: #666;
+    border-top: none;
+}
+
+/* Game Details */
+#gameDetails {
+    margin-top: 2rem;
+    border-top: 2px solid var(--border-color);
+    padding-top: 2rem;
+}
+
+.teams-detail {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+.team-detail h3 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--secondary-color);
+}
+
+.detail-section {
+    margin-bottom: 2rem;
+}
+
+.detail-section h4 {
+    margin-bottom: 0.5rem;
+    color: var(--secondary-color);
+}
+
+.detail-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.detail-table th, .detail-table td {
+    padding: 0.5rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.detail-table th {
+    background-color: var(--highlight-color);
+    font-weight: 600;
+}
+
+.detail-table tr:hover {
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    margin-top: 2rem;
+    color: #777;
+    font-size: 0.9rem;
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .teams-detail {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .controls {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .innings div {
+        width: 25px;
+        font-size: 0.9rem;
+    }
+    
+    .team-name {
+        width: 120px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .container {
+        padding: 1rem;
+    }
+    
+    .scoreboard-container {
+        padding: 1rem;
+    }
+    
+    .innings div {
+        width: 22px;
+        font-size: 0.8rem;
+        padding: 0.5rem 0;
+    }
+    
+    .team-name {
+        width: 100px;
+        font-size: 0.8rem;
+        padding: 0.5rem;
+    }
+}
