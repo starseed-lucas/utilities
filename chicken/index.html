@@ -3,845 +3,527 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beginner's Guide to Caring for Chicks</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f9f7f2;
-        }
-        
-        header {
-            background-color: #8bc34a;
-            color: white;
-            padding: 30px;
-            text-align: center;
-            border-radius: 8px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        
-        h1 {
-            margin: 0;
-            font-size: 2.5em;
-        }
-        
-        h2 {
-            color: #558b2f;
-            border-bottom: 2px solid #558b2f;
-            padding-bottom: 10px;
-            margin-top: 40px;
-        }
-        
-        h3 {
-            color: #689f38;
-            margin-top: 25px;
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            background-color: white;
-            box-shadow: 0 2px 3px rgba(0,0,0,0.1);
-            border-radius: 5px;
-            overflow: hidden;
-        }
-        
-        th, td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-        
-        th {
-            background-color: #8bc34a;
-            color: white;
-            font-weight: bold;
-        }
-        
-        tr:nth-child(even) {
-            background-color: #f5f5f5;
-        }
-        
-        tr:hover {
-            background-color: #f1f7e6;
-        }
-        
-        a {
-            color: #689f38;
-            text-decoration: none;
-        }
-        
-        a:hover {
-            text-decoration: underline;
-        }
-        
-        .tip {
-            background-color: #e8f5e9;
-            border-left: 4px solid #8bc34a;
-            padding: 15px;
-            margin: 20px 0;
-            border-radius: 0 5px 5px 0;
-        }
-        
-        .tip strong {
-            color: #558b2f;
-        }
-        
-        .section {
-            background-color: white;
-            padding: 25px;
-            margin-bottom: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        
-        ul, ol {
-            padding-left: 25px;
-        }
-        
-        li {
-            margin-bottom: 8px;
-        }
-        
-        .timeline-item {
-            display: flex;
-            margin-bottom: 15px;
-        }
-        
-        .timeline-week {
-            font-weight: bold;
-            min-width: 120px;
-            color: #558b2f;
-        }
-        
-        footer {
-            text-align: center;
-            margin-top: 50px;
-            padding: 20px;
-            color: #666;
-            font-size: 0.9em;
-        }
-        
-        @media (max-width: 768px) {
-            body {
-                padding: 10px;
-            }
-            
-            table {
-                display: block;
-                overflow-x: auto;
-            }
-            
-            .timeline-item {
-                flex-direction: column;
-            }
-            
-            .timeline-week {
-                margin-bottom: 5px;
-            }
-        }
-    </style>
+    <title>Pixel Chick Care - The Ultimate Guide</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body>
+    <div class="pixel-overlay"></div>
+    
     <header>
-        <h1>Beginner's Guide to Caring for Chicks</h1>
-        <p>A comprehensive guide to raising healthy, happy chicks</p>
+        <div class="logo-container">
+            <svg id="chicken-mascot" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <!-- Background glow effect -->
+                <defs>
+                  <radialGradient id="glowEffect" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                    <stop offset="0%" style="stop-color:#FF6B21;stop-opacity:0.7" />
+                    <stop offset="100%" style="stop-color:#FF6B21;stop-opacity:0" />
+                  </radialGradient>
+                </defs>
+                
+                <!-- Glow background -->
+                <circle cx="50" cy="50" r="40" fill="url(#glowEffect)" />
+                
+                <!-- Chicken Body - Pixelated -->
+                <rect x="40" y="55" width="20" height="20" fill="#FFC107" />
+                <rect x="35" y="50" width="5" height="25" fill="#FFC107" />
+                <rect x="60" y="50" width="5" height="25" fill="#FFC107" />
+                <rect x="40" y="45" width="20" height="10" fill="#FFC107" />
+                
+                <!-- Chicken Head -->
+                <rect x="40" y="35" width="20" height="10" fill="#FFC107" />
+                <rect x="35" y="40" width="5" height="5" fill="#FFC107" />
+                <rect x="60" y="40" width="5" height="5" fill="#FFC107" />
+                
+                <!-- Comb -->
+                <rect x="40" y="30" width="5" height="5" fill="#FF5252" />
+                <rect x="45" y="25" width="5" height="5" fill="#FF5252" />
+                <rect x="50" y="30" width="5" height="5" fill="#FF5252" />
+                
+                <!-- Beak -->
+                <rect x="40" y="40" width="5" height="5" fill="#FF9800" />
+                
+                <!-- Eyes -->
+                <rect x="45" y="38" width="3" height="3" fill="#000000" />
+                <rect x="55" y="38" width="3" height="3" fill="#000000" />
+                
+                <!-- Feet -->
+                <rect x="40" y="75" width="5" height="5" fill="#FF9800" />
+                <rect x="55" y="75" width="5" height="5" fill="#FF9800" />
+                
+                <!-- Wing -->
+                <rect x="60" y="55" width="5" height="10" fill="#FFD54F" />
+                <rect x="65" y="60" width="5" height="5" fill="#FFD54F" />
+                
+                <!-- Pixelated Dramatic Lighting -->
+                <rect x="45" y="35" width="5" height="5" fill="#FFE082" opacity="0.7" />
+                <rect x="50" y="40" width="5" height="5" fill="#FFE082" opacity="0.7" />
+                <rect x="45" y="55" width="10" height="5" fill="#FFE082" opacity="0.7" />
+            </svg>
+        </div>
+        <h1 class="pixel-text glow-text">CHICK CARE</h1>
+        <p class="pixel-text subtitle">A Pixel-Perfect Guide to Raising Happy Chicks</p>
     </header>
     
+    <nav>
+        <div class="nav-container">
+            <button class="nav-btn active" data-section="equipment">EQUIPMENT</button>
+            <button class="nav-btn" data-section="brooder">BROODER</button>
+            <button class="nav-btn" data-section="temperature">TEMPERATURE</button>
+            <button class="nav-btn" data-section="feeding">FEEDING</button>
+            <button class="nav-btn" data-section="health">HEALTH</button>
+            <button class="nav-btn" data-section="advanced">ADVANCED</button>
+        </div>
+    </nav>
+    
     <main>
-        <div class="section">
-            <p>Caring for baby chicks can be a rewarding experience, whether you're raising them for eggs, meat, or as pets. This guide will walk you through the essentials of chick care to help your fluffy little ones grow into healthy chickens.</p>
-        </div>
-        
-        <div class="section">
-            <h2>Essential Equipment Shopping List</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Item</th>
-                        <th>Description</th>
-                        <th>Purchase Link</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Brooder Plate</strong></td>
-                        <td>Shaledig 12"x16" Chick Brooder Heater Plate - Adjustable height & temperature display, safer than heat lamps</td>
-                        <td><a href="https://www.amazon.com/Shaledig-Brooder-Adjustable-Temperature-Duckling/dp/B0BYD4MQHJ" target="_blank">Amazon</a></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Heat Lamp Alternative</strong></td>
-                        <td>RentACoop 10"x10" Adjustable Heating Plate - Safer and more energy-efficient than traditional heat lamps</td>
-                        <td><a href="https://www.amazon.com/RentACoop-Heating-Plate-10/dp/B07DLCX71P" target="_blank">Amazon</a></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Chick Feeder & Waterer Kit</strong></td>
-                        <td>ZenxyHoC Chick Feeder and Waterer Kit - 2.2LBS feeder and 0.4Gal waterer with adjustable heights</td>
-                        <td><a href="https://www.amazon.com/ZenxyHoC-Waterer-Adjustable-Heights-Brooder/dp/B0C1H46XBR" target="_blank">Amazon</a></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Pine Shavings</strong></td>
-                        <td>Manna Pro Fresh Flakes - Pine shavings for chicken bedding, low dust and ultra-absorbent</td>
-                        <td><a href="https://www.amazon.com/Manna-Pro-Flakes-Poultry-Bedding/dp/B00AQ4D3EU" target="_blank">Amazon</a></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Chick Starter Feed</strong></td>
-                        <td>Manna Pro Chick Starter - Specially formulated feed with 18-20% protein for proper chick development</td>
-                        <td><a href="https://www.amazon.com/s?k=chick+starter+feed+manna+pro" target="_blank">Amazon</a></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Chick Grit</strong></td>
-                        <td>Manna Pro Chick Grit with Probiotics - Supports healthy digestion</td>
-                        <td><a href="https://www.amazon.com/s?k=chick+grit+manna+pro" target="_blank">Amazon</a></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Thermometer</strong></td>
-                        <td>Digital thermometer for accurate brooder temperature monitoring</td>
-                        <td><a href="https://www.amazon.com/s?k=digital+thermometer+brooder" target="_blank">Amazon</a></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        
-        <div class="section">
-            <h2>Healthy Treats for Chicks</h2>
-            <p>After your chicks are one week old, you can begin offering treats in moderation (no more than 10% of their diet). Treats should be introduced gradually and should never replace their chick starter feed, which contains the essential nutrients they need for proper growth.</p>
-            
-            <table>
-                <thead>
-                    <tr>
-                        <th>Treat Type</th>
-                        <th>Description</th>
-                        <th>When to Introduce</th>
-                        <th>Purchase Link</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Dried Mealworms</strong></td>
-                        <td>High-protein treat that chicks love, supports healthy growth</td>
-                        <td>After 1 week</td>
-                        <td><a href="https://www.amazon.com/dp/B00025K0R6/" target="_blank">Amazon</a></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Grub Protein Treats</strong></td>
-                        <td>Nutritious protein supplement, encourages natural foraging behavior</td>
-                        <td>After 2 weeks</td>
-                        <td><a href="https://www.amazon.com/dp/B088TLLRR5/" target="_blank">Amazon</a></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Chick Treat Blend</strong></td>
-                        <td>Mix of grains, seeds, and dried insects, encourages scratching behavior</td>
-                        <td>After 2 weeks</td>
-                        <td><a href="https://www.amazon.com/dp/B094YZR315/" target="_blank">Amazon</a></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Oats (plain, uncooked)</strong></td>
-                        <td>Good energy source, aid in digestion</td>
-                        <td>After 1 week</td>
-                        <td>Available at grocery stores</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <h3>DIY Treat Options</h3>
-            <ul>
-                <li><strong>Scrambled eggs</strong>: Excellent source of protein, can be fed from week 1</li>
-                <li><strong>Chopped greens</strong>: Lettuce, kale, spinach (avoid iceberg lettuce), introduce after week 2</li>
-                <li><strong>Vegetable scraps</strong>: Cucumber, zucchini, carrots (finely chopped), after week 2</li>
-                <li><strong>Fruits (limited)</strong>: Berries, melon, apple pieces (remove seeds), introduce after week 3, limit due to sugar content</li>
-                <li><strong>Herbs</strong>: Fresh oregano, thyme, parsley, mint - can help boost immune system, after week 2</li>
-            </ul>
-            
-            <p><strong>Important:</strong> Always introduce new treats gradually and monitor chicks for any digestive issues. Remove uneaten fresh treats after a few hours to prevent spoilage and maintain brooder cleanliness.</p>
-        </div>
-        
-        <div class="section">
-            <h2>Getting Started: What You'll Need</h2>
-            
-            <h3>Brooder Setup</h3>
-            <ul>
-                <li><strong>Brooder container</strong>: A plastic tote, wooden box, or commercial brooder that provides at least 0.5 sq ft per chick initially (increasing as they grow)</li>
-                <li><strong>Heat source</strong>: A heat lamp or brooder plate to maintain proper temperature</li>
-                <li><strong>Thermometer</strong>: To monitor brooder temperature</li>
-                <li><strong>Bedding</strong>: Pine shavings (avoid cedar, which can be toxic) or paper towels for the first few days</li>
-                <li><strong>Feeder</strong>: A chick feeder that reduces waste and prevents contamination</li>
-                <li><strong>Waterer</strong>: A chick waterer that prevents drowning and keeps water clean</li>
-                <li><strong>Chick starter feed</strong>: 18-20% protein specifically formulated for baby chicks</li>
-                <li><strong>Chick grit</strong>: Helps chicks digest food properly (not needed if using commercial chick starter)</li>
-            </ul>
-            
-            <h3>Brooder Location: Where to Keep Your Chicks</h3>
-            <p>Choosing the right location for your chick brooder is crucial for their health and your convenience. Consider these options and factors:</p>
-            
-            <table>
-                <thead>
-                    <tr>
-                        <th>Location</th>
-                        <th>Pros</th>
-                        <th>Cons</th>
-                        <th>Best For</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Inside House</strong><br>(Spare room, laundry)</td>
-                        <td>
-                            <ul>
-                                <li>Stable temperature</li>
-                                <li>Easy monitoring</li>
-                                <li>Best predator protection</li>
-                                <li>Weather-protected</li>
-                            </ul>
-                        </td>
-                        <td>
-                            <ul>
-                                <li>Dust and smell concerns</li>
-                                <li>Noise can disturb family</li>
-                                <li>Limited space</li>
-                                <li>Potential health concerns for people with respiratory issues</li>
-                            </ul>
-                        </td>
-                        <td>First-time chicken keepers, very small batches (2-6 chicks), cold climates, winter hatches</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Garage</strong></td>
-                        <td>
-                            <ul>
-                                <li>More space than house</li>
-                                <li>Keeps mess outside living areas</li>
-                                <li>Usually has electricity</li>
-                                <li>Moderate weather protection</li>
-                            </ul>
-                        </td>
-                        <td>
-                            <ul>
-                                <li>Temperature fluctuations</li>
-                                <li>May need space heater in cold weather</li>
-                                <li>Car exhaust concerns if attached</li>
-                                <li>Predators may have easier access</li>
-                            </ul>
-                        </td>
-                        <td>Medium-sized flocks (6-12 chicks), spring hatches, moderate climates with insulated garages</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Shed/Outbuilding</strong></td>
-                        <td>
-                            <ul>
-                                <li>Dedicated poultry space</li>
-                                <li>No impact on living areas</li>
-                                <li>Often closer to future coop</li>
-                                <li>Good for larger flocks</li>
-                            </ul>
-                        </td>
-                        <td>
-                            <ul>
-                                <li>Difficult temperature control</li>
-                                <li>May lack electricity</li>
-                                <li>Less frequent monitoring likely</li>
-                                <li>Higher predator risk</li>
-                            </ul>
-                        </td>
-                        <td>Experienced keepers, larger flocks (12+ chicks), insulated buildings, mild climates, late spring hatches</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Basement</strong></td>
-                        <td>
-                            <ul>
-                                <li>Naturally stable temperature</li>
-                                <li>Usually has concrete floor (easy cleaning)</li>
-                                <li>Quieter for the birds</li>
-                                <li>Not primary living space</li>
-                            </ul>
-                        </td>
-                        <td>
-                            <ul>
-                                <li>Limited natural light</li>
-                                <li>Potential humidity issues</li>
-                                <li>Dust can spread through HVAC</li>
-                                <li>Access may involve stairs</li>
-                            </ul>
-                        </td>
-                        <td>Medium-sized flocks (6-12 chicks), winter/spring hatches, households with limited main floor space</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Coop with Brooder Section</strong></td>
-                        <td>
-                            <ul>
-                                <li>No need to relocate chicks later</li>
-                                <li>Smoother transition to adult housing</li>
-                                <li>Chicks can observe adults (aids integration)</li>
-                            </ul>
-                        </td>
-                        <td>
-                            <ul>
-                                <li>Very challenging temperature maintenance</li>
-                                <li>Disease risk from adult birds</li>
-                                <li>Often lacks proper insulation</li>
-                                <li>Difficult frequent monitoring</li>
-                            </ul>
-                        </td>
-                        <td>Experienced keepers only, well-insulated coops, warm seasons, established flocks</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <h3>Key Factors When Choosing a Location</h3>
-            <ul>
-                <li><strong>Temperature control</strong>: Can you maintain 90-95°F initially, then reduce by 5°F weekly?</li>
-                <li><strong>Predator protection</strong>: Is the area secure from all potential predators (including pets)?</li>
-                <li><strong>Monitoring ease</strong>: Can you check chicks multiple times daily without hassle?</li>
-                <li><strong>Ventilation</strong>: Is there good airflow without drafts directly on chicks?</li>
-                <li><strong>Electricity</strong>: Reliable power source for heating equipment?</li>
-                <li><strong>Noise tolerance</strong>: Chicks get progressively louder as they grow</li>
-                <li><strong>Dust management</strong>: Chick down and bedding create significant dust</li>
-                <li><strong>Space requirements</strong>: Need for expanding room as chicks grow</li>
-            </ul>
-            
-            <div class="tip">
-                <strong>Pro tip</strong>: For most beginners, a garage or spare room/bathroom is ideal for the first few weeks, then transition to a more permanent outdoor solution once chicks are partially feathered (around 4 weeks). Wherever you choose, ensure the temperature is stable and you can easily access the chicks for frequent care and monitoring.
+        <div id="equipment" class="content-section active">
+            <div class="section-header">
+                <h2 class="pixel-text">Essential Equipment</h2>
+                <div class="pixel-divider"></div>
             </div>
-        </div>
-        
-        <div class="section">
-            <h2>Temperature Management</h2>
-            <p>Temperature is crucial for chick survival. Follow this temperature guide by age:</p>
             
-            <ul>
-                <li><strong>1-7 days</strong>: 90-95°F (32-35°C)</li>
-                <li><strong>Week 2</strong>: 85-90°F (29-32°C)</li>
-                <li><strong>Week 3</strong>: 80-85°F (27-29°C)</li>
-                <li><strong>Week 4</strong>: 75-80°F (24-27°C)</li>
-                <li><strong>Week 5</strong>: 70-75°F (21-24°C)</li>
-                <li><strong>Week 6+</strong>: 65-70°F (18-21°C)</li>
-            </ul>
+            <div class="pixel-card">
+                <h3 class="pixel-text">Shopping List</h3>
+                <div class="equipment-grid">
+                    <div class="equipment-item">
+                        <div class="pixel-icon heater"></div>
+                        <h4>Brooder Plate</h4>
+                        <p>Safer than heat lamps</p>
+                    </div>
+                    <div class="equipment-item">
+                        <div class="pixel-icon feeder"></div>
+                        <h4>Chick Feeder</h4>
+                        <p>Prevents waste & contamination</p>
+                    </div>
+                    <div class="equipment-item">
+                        <div class="pixel-icon waterer"></div>
+                        <h4>Chick Waterer</h4>
+                        <p>Prevents drowning</p>
+                    </div>
+                    <div class="equipment-item">
+                        <div class="pixel-icon bedding"></div>
+                        <h4>Pine Shavings</h4>
+                        <p>Absorbent bedding</p>
+                    </div>
+                    <div class="equipment-item">
+                        <div class="pixel-icon food"></div>
+                        <h4>Starter Feed</h4>
+                        <p>18-20% protein</p>
+                    </div>
+                    <div class="equipment-item">
+                        <div class="pixel-icon thermometer"></div>
+                        <h4>Thermometer</h4>
+                        <p>For temperature monitoring</p>
+                    </div>
+                </div>
+            </div>
             
-            <div class="tip">
-                <strong>Pro tip</strong>: Watch your chicks' behavior to gauge temperature:
-                <ul>
-                    <li>Chicks huddled directly under heat source = too cold</li>
-                    <li>Chicks spread out along edges of brooder = too hot</li>
-                    <li>Chicks moving freely throughout brooder = just right</li>
+            <div class="pixel-card">
+                <h3 class="pixel-text">Healthy Treats (after 1 week)</h3>
+                <ul class="pixel-list">
+                    <li>Dried Mealworms</li>
+                    <li>Scrambled Eggs</li>
+                    <li>Chopped Greens</li>
+                    <li>Oats (plain, uncooked)</li>
                 </ul>
+                <div class="pixel-warning">
+                    Treats should be less than 10% of diet
+                </div>
             </div>
         </div>
         
-        <div class="section">
-            <h2>Lighting Requirements</h2>
-            <p>Proper lighting is essential for healthy chick development and is separate from heat requirements. Heat and light serve different purposes in chick development.</p>
+        <div id="brooder" class="content-section">
+            <div class="section-header">
+                <h2 class="pixel-text">Brooder Setup</h2>
+                <div class="pixel-divider"></div>
+            </div>
             
-            <h3>Lighting Schedule</h3>
-            <ul>
-                <li><strong>Day period</strong>: Provide 12-14 hours of light during the day</li>
-                <li><strong>Night period</strong>: Ensure 10-12 hours of darkness for proper rest and development</li>
-                <li><strong>Consistency</strong>: Keep lighting hours consistent each day (consider using a timer)</li>
-                <li><strong>Transitions</strong>: Ideally, provide brief dawn/dusk transition periods rather than abrupt light changes</li>
-            </ul>
+            <div class="pixel-card">
+                <div class="brooder-simulator">
+                    <div class="brooder-container">
+                        <div class="brooder-heater"></div>
+                        <div class="brooder-chick chick1"></div>
+                        <div class="brooder-chick chick2"></div>
+                        <div class="brooder-chick chick3"></div>
+                        <div class="brooder-feeder"></div>
+                        <div class="brooder-waterer"></div>
+                    </div>
+                    <div class="brooder-controls">
+                        <label>Temperature: <span id="temp-value">95°F</span></label>
+                        <input type="range" id="temp-slider" min="65" max="95" value="95">
+                        <div class="behavior-indicator">
+                            <div class="pixel-text">Chick Behavior:</div>
+                            <div id="behavior-text">Just Right</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             
-            <h3>Light Intensity and Type</h3>
-            <ul>
-                <li><strong>Daytime intensity</strong>: Moderate room lighting is sufficient - approximately the brightness of a normally lit room</li>
-                <li><strong>Overnight</strong>: Complete darkness at night is beneficial for proper rest</li>
-                <li><strong>Light color</strong>: Natural white light during the day is best for chick development</li>
-                <li><strong>Avoid</strong>: Excessively bright lighting which can cause stress and may contribute to pecking behavior</li>
-            </ul>
-            
-            <h3>Heating vs. Lighting</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Heat Source Type</th>
-                        <th>Light Considerations</th>
-                        <th>Additional Notes</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Brooder Plate</strong></td>
-                        <td>Doesn't provide light, only heat</td>
-                        <td>Requires separate ambient room lighting during day; turn off lights at night for darkness</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Standard Heat Lamp</strong></td>
-                        <td>Provides both heat and bright light</td>
-                        <td>Can disrupt sleep if used 24/7; may need to be turned off at night if room is warm enough</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Red Heat Lamp</strong></td>
-                        <td>Provides heat with less disruptive red light</td>
-                        <td>Better for nighttime use if heat is needed 24/7, as red light is less disruptive to sleep</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <div class="tip">
-                <strong>Pro tip</strong>: Studies have shown that continuous 24-hour lighting can negatively affect chick development, potentially causing stress, altered growth rates, and even behavioral issues. A regular day/night cycle promotes healthier development and better sleep patterns.
+            <div class="pixel-card">
+                <h3 class="pixel-text">Brooder Location Options</h3>
+                <div class="location-selector">
+                    <button class="location-btn active" data-location="house">House</button>
+                    <button class="location-btn" data-location="garage">Garage</button>
+                    <button class="location-btn" data-location="shed">Shed</button>
+                    <button class="location-btn" data-location="basement">Basement</button>
+                </div>
+                <div class="location-info">
+                    <div id="house-info" class="location-details active">
+                        <h4>Inside House</h4>
+                        <p class="pros">+ Stable temperature</p>
+                        <p class="pros">+ Easy monitoring</p>
+                        <p class="cons">- Dust and smell</p>
+                        <p class="cons">- Noise concerns</p>
+                    </div>
+                    <div id="garage-info" class="location-details">
+                        <h4>Garage</h4>
+                        <p class="pros">+ More space than house</p>
+                        <p class="pros">+ Keeps mess outside</p>
+                        <p class="cons">- Temperature fluctuations</p>
+                        <p class="cons">- Predator concerns</p>
+                    </div>
+                    <div id="shed-info" class="location-details">
+                        <h4>Shed/Outbuilding</h4>
+                        <p class="pros">+ Dedicated poultry space</p>
+                        <p class="pros">+ No impact on living areas</p>
+                        <p class="cons">- Difficult temperature control</p>
+                        <p class="cons">- Less frequent monitoring</p>
+                    </div>
+                    <div id="basement-info" class="location-details">
+                        <h4>Basement</h4>
+                        <p class="pros">+ Stable temperature</p>
+                        <p class="pros">+ Concrete floor (easy cleaning)</p>
+                        <p class="cons">- Limited natural light</p>
+                        <p class="cons">- Dust can spread through HVAC</p>
+                    </div>
+                </div>
             </div>
         </div>
         
-        <div class="section">
-            <h2>Feeding and Watering</h2>
+        <div id="temperature" class="content-section">
+            <div class="section-header">
+                <h2 class="pixel-text">Temperature Management</h2>
+                <div class="pixel-divider"></div>
+            </div>
             
-            <h3>Feed</h3>
-            <ul>
-                <li>Start with chick starter feed (18-20% protein) for the first 8 weeks</li>
-                <li>Feed should be available at all times (free choice)</li>
-                <li>After 8 weeks, transition to grower feed (16-18% protein)</li>
-                <li>Avoid treats for the first week; afterward, offer in moderation</li>
-            </ul>
+            <div class="pixel-card">
+                <h3 class="pixel-text">Temperature Guide</h3>
+                <div class="temperature-guide">
+                    <div class="temp-week">
+                        <div class="week-label">Week 1</div>
+                        <div class="temp-bar" style="height: 95%;">
+                            <div class="temp-value">95°F</div>
+                        </div>
+                    </div>
+                    <div class="temp-week">
+                        <div class="week-label">Week 2</div>
+                        <div class="temp-bar" style="height: 90%;">
+                            <div class="temp-value">90°F</div>
+                        </div>
+                    </div>
+                    <div class="temp-week">
+                        <div class="week-label">Week 3</div>
+                        <div class="temp-bar" style="height: 85%;">
+                            <div class="temp-value">85°F</div>
+                        </div>
+                    </div>
+                    <div class="temp-week">
+                        <div class="week-label">Week 4</div>
+                        <div class="temp-bar" style="height: 80%;">
+                            <div class="temp-value">80°F</div>
+                        </div>
+                    </div>
+                    <div class="temp-week">
+                        <div class="week-label">Week 5</div>
+                        <div class="temp-bar" style="height: 75%;">
+                            <div class="temp-value">75°F</div>
+                        </div>
+                    </div>
+                    <div class="temp-week">
+                        <div class="week-label">Week 6+</div>
+                        <div class="temp-bar" style="height: 70%;">
+                            <div class="temp-value">70°F</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             
-            <h3>Water</h3>
-            <ul>
-                <li>Provide clean, fresh water at all times</li>
-                <li>Keep waterers clean by rinsing daily and disinfecting weekly</li>
-                <li>Use room temperature water</li>
-                <li>Place waterers on a small platform once chicks are a few days old to prevent bedding from getting into the water</li>
-            </ul>
-        </div>
-        
-        <div class="section">
-            <h2>Brooder Maintenance Schedule</h2>
-            
-            <table>
-                <thead>
-                    <tr>
-                        <th>Time</th>
-                        <th>Task</th>
-                        <th>Details</th>
-                        <th>Frequency</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Morning (7-9 AM)</strong></td>
-                        <td>Check water</td>
-                        <td>Ensure water is clean and filled</td>
-                        <td>Daily</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Morning (7-9 AM)</strong></td>
-                        <td>Check feed</td>
-                        <td>Refill feeders if needed</td>
-                        <td>Daily</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Morning (7-9 AM)</strong></td>
-                        <td>Morning health check</td>
-                        <td>Observe chicks for activity level, eating/drinking habits</td>
-                        <td>Daily</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Midday (12-2 PM)</strong></td>
-                        <td>Spot clean bedding</td>
-                        <td>Remove wet spots or soiled bedding</td>
-                        <td>Daily</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Midday (12-2 PM)</strong></td>
-                        <td>Check water again</td>
-                        <td>Refill if needed, ensure no debris in waterer</td>
-                        <td>Daily</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Evening (5-7 PM)</strong></td>
-                        <td>Final feed/water check</td>
-                        <td>Top off before night</td>
-                        <td>Daily</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Evening (5-7 PM)</strong></td>
-                        <td>Evening health check</td>
-                        <td>Look for signs of illness, ensure all chicks are active</td>
-                        <td>Daily</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Monday</strong></td>
-                        <td>Measure and record weight</td>
-                        <td>Track growth on a weekly basis</td>
-                        <td>Weekly</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Wednesday</strong></td>
-                        <td>Adjust heat source</td>
-                        <td>Lower temperature by 5°F, raise height if needed</td>
-                        <td>Weekly</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Saturday/Sunday</strong></td>
-                        <td>Complete bedding change</td>
-                        <td>Full clean-out of brooder</td>
-                        <td>Weekly</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Saturday/Sunday</strong></td>
-                        <td>Disinfect feeders/waterers</td>
-                        <td>Clean thoroughly with mild dish soap, rinse well</td>
-                        <td>Weekly</td>
-                    </tr>
-                    <tr>
-                        <td><strong>1st of Month</strong></td>
-                        <td>Brooder size assessment</td>
-                        <td>Ensure 0.5-1 sq ft per chick as they grow</td>
-                        <td>Monthly</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <div class="tip">
-                <strong>Pro tip</strong>: Keep a log of your chicks' growth, behavior, and any issues you notice. This record will be invaluable for future batches of chicks and can help you identify patterns if health issues arise.
+            <div class="pixel-card">
+                <h3 class="pixel-text">Lighting Requirements</h3>
+                <div class="lighting-cycle">
+                    <div class="day-period">
+                        <div class="pixel-sun"></div>
+                        <h4>Day Period</h4>
+                        <p>12-14 hours</p>
+                        <p>Natural white light</p>
+                    </div>
+                    <div class="night-period">
+                        <div class="pixel-moon"></div>
+                        <h4>Night Period</h4>
+                        <p>10-12 hours</p>
+                        <p>Darkness for rest</p>
+                    </div>
+                </div>
+                <div class="pixel-tip">
+                    <p>Pro Tip: Use a timer to maintain consistent lighting schedule</p>
+                </div>
             </div>
         </div>
         
-        <div class="section">
-            <h2>Health and Safety</h2>
+        <div id="feeding" class="content-section">
+            <div class="section-header">
+                <h2 class="pixel-text">Feeding & Watering</h2>
+                <div class="pixel-divider"></div>
+            </div>
             
-            <h3>Signs of a Healthy Chick</h3>
-            <ul>
-                <li>Active and alert</li>
-                <li>Eating and drinking regularly</li>
-                <li>Clean vent area</li>
-                <li>Clear eyes</li>
-                <li>Growing feathers evenly</li>
-            </ul>
+            <div class="pixel-card">
+                <div class="feeding-guide">
+                    <div class="feed-types">
+                        <div class="feed-item">
+                            <div class="feed-icon starter"></div>
+                            <div class="feed-info">
+                                <h4>Starter</h4>
+                                <p>Weeks 1-8</p>
+                                <p>18-20% Protein</p>
+                            </div>
+                        </div>
+                        <div class="feed-item">
+                            <div class="feed-icon grower"></div>
+                            <div class="feed-info">
+                                <h4>Grower</h4>
+                                <p>Weeks 9-18</p>
+                                <p>16-18% Protein</p>
+                            </div>
+                        </div>
+                        <div class="feed-item">
+                            <div class="feed-icon layer"></div>
+                            <div class="feed-info">
+                                <h4>Layer</h4>
+                                <p>Week 18+</p>
+                                <p>16% Protein</p>
+                                <p>Added Calcium</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             
-            <h3>Common Health Issues</h3>
-            <ul>
-                <li><strong>Pasty butt</strong>: Dried droppings blocking the vent; clean gently with warm, damp cloth</li>
-                <li><strong>Spraddle leg</strong>: Legs splaying outward; correct early with a bandage "hobble"</li>
-                <li><strong>Respiratory issues</strong>: Sneezing, wheezing, nasal discharge; may require veterinary care</li>
-                <li><strong>Coccidiosis</strong>: Bloody droppings; requires medication</li>
-            </ul>
-            
-            <h3>Preventing Health Problems</h3>
-            <ul>
-                <li>Keep brooder clean and dry</li>
-                <li>Provide proper nutrition</li>
-                <li>Maintain appropriate temperature</li>
-                <li>Reduce stress by minimizing handling for the first few days</li>
-                <li>Use electrolytes in water during stressful periods</li>
-            </ul>
-        </div>
-        
-        <div class="section">
-            <h2>Handling Chicks</h2>
-            <ul>
-                <li>Wait until chicks are 1-2 days old before handling</li>
-                <li>Wash hands before and after handling chicks</li>
-                <li>Hold gently by placing one hand under the chick and cupping the other over its back</li>
-                <li>Keep handling sessions short (5-10 minutes) for young chicks</li>
-                <li>Gradually increase handling time to socialize chicks</li>
-            </ul>
-        </div>
-        
-        <div class="section">
-            <h2>Weeks 6-8: Preparing for the Outdoor Coop</h2>
-            <p>Around 6-8 weeks of age, chicks will be ready to transition to an outdoor coop if weather permits. Prepare by:</p>
-            
-            <ul>
-                <li>Ensuring the coop is predator-proof</li>
-                <li>Installing proper ventilation while avoiding drafts</li>
-                <li>Providing appropriate roosting bars and nesting boxes</li>
-                <li>Introducing chicks to the coop during the day, returning them to the brooder at night initially</li>
-                <li>Gradually extending coop time until they stay overnight</li>
-            </ul>
-        </div>
-        
-        <div class="section">
-            <h2>Timeline for Chick Development</h2>
-            <div class="timeline-item">
-                <div class="timeline-week">Week 1</div>
-                <div class="timeline-content">Tiny fluff balls, sleeping often, learning to eat and drink</div>
-            </div>
-            <div class="timeline-item">
-                <div class="timeline-week">Weeks 2-3</div>
-                <div class="timeline-content">Wing and tail feathers begin developing</div>
-            </div>
-            <div class="timeline-item">
-                <div class="timeline-week">Weeks 3-4</div>
-                <div class="timeline-content">More active, beginning to show personalities</div>
-            </div>
-            <div class="timeline-item">
-                <div class="timeline-week">Weeks 5-6</div>
-                <div class="timeline-content">Most body feathers developed, less heat needed</div>
-            </div>
-            <div class="timeline-item">
-                <div class="timeline-week">Weeks 7-8</div>
-                <div class="timeline-content">Nearly fully feathered, ready for outdoor coop if weather permits</div>
-            </div>
-            <div class="timeline-item">
-                <div class="timeline-week">Weeks 16-24</div>
-                <div class="timeline-content">Pullets begin laying eggs (depending on breed)</div>
+            <div class="pixel-card">
+                <h3 class="pixel-text">Watering Tips</h3>
+                <ul class="pixel-list">
+                    <li>Clean, fresh water at all times</li>
+                    <li>Rinse waterers daily</li>
+                    <li>Disinfect weekly</li>
+                    <li>Room temperature water only</li>
+                    <li>Raise waterers slightly to prevent bedding contamination</li>
+                </ul>
+                <div class="maintenance-schedule">
+                    <button id="show-schedule" class="pixel-btn">Show Maintenance Schedule</button>
+                    <div id="schedule-modal" class="modal">
+                        <div class="modal-content">
+                            <span class="close-btn">&times;</span>
+                            <h3>Daily Maintenance Schedule</h3>
+                            <div class="schedule-grid">
+                                <div class="schedule-time">Morning</div>
+                                <div class="schedule-task">Check water & feed, health check</div>
+                                
+                                <div class="schedule-time">Midday</div>
+                                <div class="schedule-task">Spot clean bedding, check water</div>
+                                
+                                <div class="schedule-time">Evening</div>
+                                <div class="schedule-task">Final water & feed check, health check</div>
+                                
+                                <div class="schedule-time">Weekly</div>
+                                <div class="schedule-task">Complete bedding change, clean feeders/waterers</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         
-        <div class="section">
-            <h2>Advanced Tips and Tricks</h2>
+        <div id="health" class="content-section">
+            <div class="section-header">
+                <h2 class="pixel-text">Health & Safety</h2>
+                <div class="pixel-divider"></div>
+            </div>
             
-            <h3>Brooder Setup</h3>
-            <ul>
-                <li><strong>Vertical space management</strong>: Secure hardware cloth over open-top brooders to prevent escapes as chicks learn to jump and flutter.</li>
-                <li><strong>Brooder box insulation</strong>: Line wooden brooder boxes with aluminum foil before adding bedding to create a moisture barrier and make cleaning easier.</li>
-                <li><strong>Nighttime visibility</strong>: Use a red or blue nightlight instead of white light if chicks need overnight illumination - it's less disruptive to their sleep.</li>
-                <li><strong>Removable liners</strong>: Place vinyl shelf liner or puppy pads under pine shavings for easy cleanup during bedding changes.</li>
-                <li><strong>Brooder placement</strong>: Position the brooder in a quiet, draft-free area that maintains a stable temperature but still allows you to observe the chicks.</li>
-            </ul>
+            <div class="pixel-card">
+                <h3 class="pixel-text">Signs of a Healthy Chick</h3>
+                <div class="health-indicators">
+                    <div class="health-item">
+                        <div class="health-icon active"></div>
+                        <p>Active & Alert</p>
+                    </div>
+                    <div class="health-item">
+                        <div class="health-icon eating"></div>
+                        <p>Regular Eating</p>
+                    </div>
+                    <div class="health-item">
+                        <div class="health-icon clean"></div>
+                        <p>Clean Vent</p>
+                    </div>
+                    <div class="health-item">
+                        <div class="health-icon eyes"></div>
+                        <p>Clear Eyes</p>
+                    </div>
+                    <div class="health-item">
+                        <div class="health-icon feathers"></div>
+                        <p>Even Feathering</p>
+                    </div>
+                </div>
+            </div>
             
-            <h3>Feeding Innovations</h3>
-            <ul>
-                <li><strong>Prevent drowning</strong>: Place clean marbles in shallow water dishes if using them instead of commercial waterers to prevent drowning.</li>
-                <li><strong>DIY chick feeder</strong>: Use a clean plastic container with small holes cut near the bottom edge as an emergency feeder.</li>
-                <li><strong>Reduce waste</strong>: Place a small piece of hardware cloth over open feeders to prevent chicks from scratching feed out.</li>
-                <li><strong>Supplement boost</strong>: Add a tablespoon of plain yogurt to feed once weekly after week 2 to support digestive health.</li>
-                <li><strong>Greens holder</strong>: Attach a small bundle of greens to the side of the brooder with a clip to keep greens clean and encourage natural pecking.</li>
-            </ul>
-            
-            <h3>Health Management</h3>
-            <ul>
-                <li><strong>DIY electrolyte solution</strong>: Mix 1 tsp sugar, 1/8 tsp salt, and 1/8 tsp baking soda in 1 cup of water for emergency electrolytes.</li>
-                <li><strong>Vitamin boost</strong>: Add a few drops of apple cider vinegar to water (1 tsp per gallon) twice weekly to support immunity.</li>
-                <li><strong>Gentle cleaning for pasty butt</strong>: Use a cotton ball soaked in warm water to gently soften dried droppings before removing.</li>
-                <li><strong>Spraddle leg prevention</strong>: Use shelf liner or rubber drawer liner as brooder floor covering for the first few days to provide secure footing.</li>
-                <li><strong>Temperature fluctuation buffer</strong>: Place a large rock or brick under the heat source that will absorb and slowly release heat if there's a power outage.</li>
-            </ul>
-            
-            <h3>Socialization and Enrichment</h3>
-            <ul>
-                <li><strong>Chick playground</strong>: Create small ramps or platforms in the brooder once chicks are active to encourage exercise and exploration.</li>
-                <li><strong>Dust bath dish</strong>: After week 3, provide a small container with a mixture of fine sand and food-grade diatomaceous earth for dust bathing.</li>
-                <li><strong>Background noise</strong>: Playing quiet radio music helps chicks get used to various sounds and reduces stress from sudden noises.</li>
-                <li><strong>Mirror entertainment</strong>: Securely attach a small mirror to the side of the brooder for chicks to interact with and recognize themselves.</li>
-                <li><strong>Training treats</strong>: Use small bits of mealworm to teach chicks to come when called - very useful for when they're older.</li>
-            </ul>
-            
-            <h3>Time-Saving Techniques</h3>
-            <ul>
-                <li><strong>Batch waterer cleaning</strong>: Keep multiple waterer bases ready so you can quickly swap them out for cleaning.</li>
-                <li><strong>Feed storage</strong>: Store a week's worth of feed in easily accessible containers near the brooder to save time on daily feedings.</li>
-                <li><strong>Multi-level brooder</strong>: As chicks grow, create a two-level brooder with a ramp to increase space without needing a larger footprint.</li>
-                <li><strong>Scheduled observation</strong>: Set specific times each day for observing chicks to ensure you notice any health or behavioral changes.</li>
-                <li><strong>Double brooder setup</strong>: For larger flocks, maintain two smaller brooders rather than one large one for easier cleaning and maintenance.</li>
-            </ul>
-            
-            <h3>Money-Saving Ideas</h3>
-            <ul>
-                <li><strong>Repurposed containers</strong>: Clean gallon milk jugs can be cut and used as temporary feeders or waterers in a pinch.</li>
-                <li><strong>DIY chick toys</strong>: Paper towel tubes stuffed with treats encourage natural foraging behavior.</li>
-                <li><strong>Brooder furniture</strong>: Use upside-down flowerpots as roosts and hiding spots in the brooder.</li>
-                <li><strong>Heat conservation</strong>: Wrap reflective insulation around the outside of the brooder to improve heat efficiency.</li>
-                <li><strong>Bedding extender</strong>: Top-dress soiled bedding with a thin layer of fresh bedding between full changes to reduce waste.</li>
-            </ul>
-            
-            <h3>Troubleshooting Common Issues</h3>
-            <ul>
-                <li><strong>Picking prevention</strong>: If chicks begin pecking at each other, dim the lighting slightly and ensure adequate space.</li>
-                <li><strong>Cold chick recovery</strong>: If a chick is found cold and listless, warm it against your skin under your shirt before returning to brooder.</li>
-                <li><strong>Weak leg remedy</strong>: Add a vitamin supplement containing vitamin B to water for a few days if chicks show leg weakness.</li>
-                <li><strong>Pasting prevention</strong>: Reduce protein slightly if multiple chicks develop pasty butt; can indicate protein is too high.</li>
-                <li><strong>Stressed chick calming</strong>: Place a few herbs like dried oregano or thyme in the brooder to create a calming effect.</li>
-            </ul>
+            <div class="pixel-card">
+                <h3 class="pixel-text">Common Health Issues</h3>
+                <div class="health-issues">
+                    <div class="issue-tabs">
+                        <button class="issue-tab active" data-issue="pasty">Pasty Butt</button>
+                        <button class="issue-tab" data-issue="spraddle">Spraddle Leg</button>
+                        <button class="issue-tab" data-issue="respiratory">Respiratory</button>
+                        <button class="issue-tab" data-issue="cocci">Coccidiosis</button>
+                    </div>
+                    <div class="issue-content">
+                        <div id="pasty-content" class="issue-details active">
+                            <h4>Pasty Butt</h4>
+                            <p>Dried droppings blocking the vent</p>
+                            <h5>Treatment:</h5>
+                            <p>Clean gently with warm, damp cloth</p>
+                        </div>
+                        <div id="spraddle-content" class="issue-details">
+                            <h4>Spraddle Leg</h4>
+                            <p>Legs splaying outward</p>
+                            <h5>Treatment:</h5>
+                            <p>Correct early with a bandage "hobble"</p>
+                        </div>
+                        <div id="respiratory-content" class="issue-details">
+                            <h4>Respiratory Issues</h4>
+                            <p>Sneezing, wheezing, nasal discharge</p>
+                            <h5>Treatment:</h5>
+                            <p>May require veterinary care</p>
+                        </div>
+                        <div id="cocci-content" class="issue-details">
+                            <h4>Coccidiosis</h4>
+                            <p>Bloody droppings</p>
+                            <h5>Treatment:</h5>
+                            <p>Requires medication</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         
-        <div class="section">
-            <h2>Chicken Terminology for Beginners</h2>
-            <p>Understanding the vocabulary used in chicken keeping will help you communicate with other chicken keepers and better understand care instructions.</p>
+        <div id="advanced" class="content-section">
+            <div class="section-header">
+                <h2 class="pixel-text">Advanced Tips</h2>
+                <div class="pixel-divider"></div>
+            </div>
             
-            <table>
-                <thead>
-                    <tr>
-                        <th>Term</th>
-                        <th>Definition</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Brooder</strong></td>
-                        <td>The heated enclosure where baby chicks are raised until they're old enough to regulate their body temperature (usually 6-8 weeks).</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Brooder plate</strong></td>
-                        <td>A heating device that mimics a mother hen's warmth, providing heat from above rather than a heat lamp.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Chick</strong></td>
-                        <td>A baby chicken of either sex, typically refers to birds under 8 weeks old.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Coccidiosis</strong></td>
-                        <td>A common parasitic disease in chickens caused by protozoa that affects the intestinal tract, often prevented with medicated starter feed.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Cockerel</strong></td>
-                        <td>A young male chicken less than one year old.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Comb</strong></td>
-                        <td>The fleshy red crest on top of a chicken's head.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Crop</strong></td>
-                        <td>Part of a chicken's digestive system; an expandable pouch in the throat that stores food before digestion.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Feather pecking</strong></td>
-                        <td>A behavior where chickens peck at each other's feathers, which can lead to injury if not addressed.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Gizzard</strong></td>
-                        <td>A muscular part of a chicken's digestive system that grinds food, works with grit to break down food particles.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Grit</strong></td>
-                        <td>Small, insoluble stones or commercial product that chickens ingest to help grind food in their gizzard.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Keel</strong></td>
-                        <td>The extension of the breastbone that runs down the middle of the chicken's chest.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Medicated feed</strong></td>
-                        <td>Starter feed containing medication (usually amprolium) to prevent coccidiosis in chicks.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Molt</strong></td>
-                        <td>The process of shedding and regrowing feathers, which typically occurs annually.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Pasty butt</strong></td>
-                        <td>A condition where droppings stick to and block a chick's vent, which can be fatal if not addressed.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Pullet</strong></td>
-                        <td>A young female chicken less than one year old.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Spraddle leg</strong></td>
-                        <td>A condition where a chick's legs splay outward, making it difficult or impossible to walk normally.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Vent</strong></td>
-                        <td>The external opening of a chicken's cloaca, which serves as the single exit point for the digestive, reproductive, and urinary tracts.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Wattles</strong></td>
-                        <td>The fleshy red lobes that hang beneath a chicken's beak.</td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="pixel-card">
+                <h3 class="pixel-text">Chick Development Timeline</h3>
+                <div class="development-timeline">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-item">
+                        <div class="timeline-icon week1"></div>
+                        <div class="timeline-content">
+                            <h4>Week 1</h4>
+                            <p>Tiny fluff balls, sleeping often</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-icon week2-3"></div>
+                        <div class="timeline-content">
+                            <h4>Weeks 2-3</h4>
+                            <p>Wing and tail feathers begin developing</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-icon week4-5"></div>
+                        <div class="timeline-content">
+                            <h4>Weeks 4-5</h4>
+                            <p>More active, beginning to show personalities</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-icon week6-8"></div>
+                        <div class="timeline-content">
+                            <h4>Weeks 6-8</h4>
+                            <p>Nearly fully feathered, ready for outdoor coop</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-icon week16"></div>
+                        <div class="timeline-content">
+                            <h4>Weeks 16-24</h4>
+                            <p>Pullets begin laying eggs</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
             
-            <div class="tip">
-                <strong>Pro tip</strong>: Learning these terms will not only help you understand chicken care instructions better but will also help you communicate effectively with veterinarians and experienced chicken keepers if you need assistance.
+            <div class="pixel-card">
+                <h3 class="pixel-text">Pro Tips & Tricks</h3>
+                <div class="tips-container">
+                    <div class="tips-category">
+                        <button class="tip-btn active" data-tip="brooder">Brooder Setup</button>
+                        <button class="tip-btn" data-tip="feeding">Feeding</button>
+                        <button class="tip-btn" data-tip="health">Health</button>
+                        <button class="tip-btn" data-tip="enrichment">Enrichment</button>
+                    </div>
+                    <div class="tips-content">
+                        <div id="brooder-tips" class="tip-details active">
+                            <ul class="pixel-list">
+                                <li>Line wooden brooders with aluminum foil for moisture barrier</li>
+                                <li>Use red/blue nightlight instead of white for overnight</li>
+                                <li>Place vinyl shelf liner under bedding for easy cleanup</li>
+                            </ul>
+                        </div>
+                        <div id="feeding-tips" class="tip-details">
+                            <ul class="pixel-list">
+                                <li>Place marbles in shallow water dishes to prevent drowning</li>
+                                <li>Use hardware cloth over open feeders to reduce waste</li>
+                                <li>Add tablespoon of plain yogurt to feed once weekly (after week 2)</li>
+                            </ul>
+                        </div>
+                        <div id="health-tips" class="tip-details">
+                            <ul class="pixel-list">
+                                <li>DIY electrolyte solution: 1 tsp sugar, 1/8 tsp salt, 1/8 tsp baking soda in 1 cup water</li>
+                                <li>Add apple cider vinegar to water (1 tsp per gallon) twice weekly</li>
+                                <li>Use shelf liner as brooder floor for first few days to prevent spraddle leg</li>
+                            </ul>
+                        </div>
+                        <div id="enrichment-tips" class="tip-details">
+                            <ul class="pixel-list">
+                                <li>Create small ramps or platforms to encourage exercise</li>
+                                <li>After week 3, provide small container with fine sand for dust bathing</li>
+                                <li>Play quiet radio music to reduce stress from sudden noises</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </main>
     
     <footer>
-        <p>Beginner's Guide to Caring for Chicks | Created with ♥ for chicken keepers everywhere</p>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <svg id="footer-chicken" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Simplified chicken SVG for footer -->
+                    <rect x="40" y="55" width="20" height="20" fill="#FFC107" />
+                    <rect x="40" y="35" width="20" height="10" fill="#FFC107" />
+                    <rect x="40" y="30" width="5" height="5" fill="#FF5252" />
+                    <rect x="45" y="38" width="3" height="3" fill="#000000" />
+                </svg>
+            </div>
+            <div class="footer-text">
+                <p class="pixel-text">PIXEL CHICK CARE GUIDE</p>
+                <p>Created with ♥ for chicken keepers everywhere</p>
+            </div>
+        </div>
     </footer>
+    
+    <script src="script.js"></script>
 </body>
 </html>
